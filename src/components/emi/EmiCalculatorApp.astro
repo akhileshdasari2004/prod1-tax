@@ -1,5 +1,8 @@
 ---
 import { emiDefaults } from '../../content/emi-calculator-page';
+import { DEFAULT_CURRENCY } from '../../config/currencies';
+import { formatMoney } from '../../lib/currency';
+import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
 
 const tenureMonths = emiDefaults.years * 12;
 ---
@@ -7,13 +10,15 @@ const tenureMonths = emiDefaults.years * 12;
 <section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="emi-calc-heading">
   <h2 id="emi-calc-heading" class="sr-only">EMI calculator</h2>
 
+  <CalculatorCurrencyBar toolId="emi" />
+
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:gap-10">
     <form id="emi-form" class="card space-y-8" novalidate>
       <div>
         <div class="flex items-baseline justify-between gap-4">
           <label class="label-field mb-0" for="emi-principal">Loan amount</label>
           <span id="emi-principal-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
-            >{emiDefaults.principal.toLocaleString()}</span
+            >{formatMoney(emiDefaults.principal, false, DEFAULT_CURRENCY)}</span
           >
         </div>
         <input
@@ -39,7 +44,7 @@ const tenureMonths = emiDefaults.years * 12;
           class="calc-range mt-3"
           aria-label="Loan amount slider"
         />
-        <p id="emi-principal-hint" class="field-hint">Principal borrowed (USD or any currency unit).</p>
+        <p id="emi-principal-hint" class="field-hint">Principal borrowed in your selected currency.</p>
       </div>
 
       <div>
@@ -179,16 +184,16 @@ const tenureMonths = emiDefaults.years * 12;
 
 <script>
   import '../../scripts/emi-calculator.ts';
+  import { bindMoneyDisplay } from '../../scripts/currency-display.ts';
+
+  bindMoneyDisplay('emi-principal', 'emi-principal-display');
 
   function syncDisplays(): void {
-    const principal = document.getElementById('emi-principal') as HTMLInputElement | null;
     const rate = document.getElementById('emi-rate') as HTMLInputElement | null;
     const years = document.getElementById('emi-years') as HTMLInputElement | null;
-    const principalD = document.getElementById('emi-principal-display');
     const rateD = document.getElementById('emi-rate-display');
     const yearsD = document.getElementById('emi-years-display');
     const tenureHint = document.getElementById('emi-tenure-hint');
-    if (principal && principalD) principalD.textContent = Number(principal.value).toLocaleString();
     if (rate && rateD) rateD.textContent = `${rate.value}%`;
     if (years && yearsD) {
       const y = Number(years.value);

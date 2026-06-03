@@ -1,0 +1,149 @@
+---
+import { CURRENCIES, DEFAULT_CURRENCY } from '../config/currencies';
+
+interface Props {
+  id?: string;
+  showLabel?: boolean;
+  /** Wider select for calculator toolbars */
+  variant?: 'nav' | 'calculator';
+}
+
+const { id = 'currency-select', showLabel = false, variant = 'nav' } = Astro.props;
+---
+
+<div class:list={['currency-select-wrap', variant === 'calculator' && 'currency-select-wrap--calculator']}>
+  {showLabel && (
+    <span class="text-caption mr-2 font-medium" style="color: var(--text-tertiary);">
+      Currency
+    </span>
+  )}
+  <label for={id} class="sr-only">Display currency</label>
+  <select
+    id={id}
+    class="currency-select"
+    aria-label="Display currency"
+    data-default={DEFAULT_CURRENCY}
+    data-currency-select
+  >
+    {
+      CURRENCIES.map((currency) => (
+        <option value={currency.code} selected={currency.code === DEFAULT_CURRENCY}>
+          {currency.code} — {currency.label}
+        </option>
+      ))
+    }
+  </select>
+</div>
+
+<style>
+  .currency-select-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  .currency-select {
+    height: 2.5rem;
+    max-width: 11rem;
+    cursor: pointer;
+    appearance: none;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-default);
+    background-color: var(--bg-elevated);
+    color: var(--text-primary);
+    padding-inline: 2rem 0.75rem;
+    font-size: var(--text-caption-size);
+    font-weight: 500;
+    line-height: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 0.65rem center;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .currency-select:hover {
+    border-color: var(--text-tertiary);
+  }
+
+  .currency-select:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  html.dark .currency-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1a6' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  }
+
+  .currency-select-wrap--calculator .currency-select {
+    max-width: 14rem;
+    width: 100%;
+    min-width: 10rem;
+  }
+
+  @media (max-width: 767px) {
+    .currency-select {
+      max-width: 100%;
+      width: 100%;
+      padding-inline: 2rem 0.75rem;
+    }
+
+    .currency-select-wrap--calculator .currency-select {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import {
+    CURRENCY_STORAGE_KEY,
+    DEFAULT_CURRENCY,
+    isCurrencyCode,
+    type CurrencyCode,
+  } from '../config/currencies';
+  import { CURRENCY_CHANGE_EVENT, setSelectedCurrency } from '../lib/currency';
+
+  function initCurrencySelectors(): void {
+    const selects = document.querySelectorAll<HTMLSelectElement>('[data-currency-select]');
+    if (selects.length === 0) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get('currency');
+    if (fromUrl && isCurrencyCode(fromUrl)) {
+      localStorage.setItem(CURRENCY_STORAGE_KEY, fromUrl);
+    }
+
+    const stored = localStorage.getItem(CURRENCY_STORAGE_KEY);
+    const initial: CurrencyCode =
+      stored && isCurrencyCode(stored)
+        ? stored
+        : (selects[0]?.dataset.default as CurrencyCode) || DEFAULT_CURRENCY;
+
+    const applyValue = (code: CurrencyCode, source?: HTMLSelectElement) => {
+      selects.forEach((select) => {
+        if (select !== source) select.value = code;
+      });
+      localStorage.setItem(CURRENCY_STORAGE_KEY, code);
+    };
+
+    applyValue(initial);
+    selects.forEach((select) => {
+      select.value = initial;
+      select.addEventListener('change', () => {
+        const code = select.value;
+        if (!isCurrencyCode(code)) return;
+        applyValue(code, select);
+        setSelectedCurrency(code);
+      });
+    });
+
+    setSelectedCurrency(initial);
+
+    window.addEventListener(CURRENCY_CHANGE_EVENT, ((event: CustomEvent<{ code: CurrencyCode }>) => {
+      const code = event.detail?.code;
+      if (code && isCurrencyCode(code)) applyValue(code);
+    }) as EventListener);
+  }
+
+  initCurrencySelectors();
+</script>

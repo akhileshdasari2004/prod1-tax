@@ -1,5 +1,6 @@
 import { sipFutureValue, sipProjectionByYear } from '../lib/finance';
-import { formatUSD, parsePositiveNumber } from '../lib/format';
+import { onCurrencyChange } from '../lib/currency';
+import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 import type { SipYearPoint } from '../lib/finance';
 
 const PARAM_KEYS = { monthly: 'm', rate: 'r', years: 'y' } as const;
@@ -131,9 +132,9 @@ function renderTable(tbody: HTMLElement, series: SipYearPoint[]): void {
       (row) => `
     <tr>
       <td>${row.year}</td>
-      <td>${formatUSD(row.invested)}</td>
-      <td>${formatUSD(row.wealthGained)}</td>
-      <td>${formatUSD(row.maturityValue)}</td>
+      <td>${formatSelectedMoney(row.invested)}</td>
+      <td>${formatSelectedMoney(row.wealthGained)}</td>
+      <td>${formatSelectedMoney(row.maturityValue)}</td>
     </tr>`,
     )
     .join('');
@@ -177,9 +178,9 @@ export function initSipCalculator(): void {
     const result = sipFutureValue(inputs.monthly, inputs.rate, inputs.years);
     const series = sipProjectionByYear(inputs.monthly, inputs.rate, inputs.years);
 
-    setText('sip-invested', formatUSD(result.totalInvested));
-    setText('sip-gain', formatUSD(result.wealthGained));
-    setText('sip-fv', formatUSD(result.futureValue));
+    setText('sip-invested', formatSelectedMoney(result.totalInvested));
+    setText('sip-gain', formatSelectedMoney(result.wealthGained));
+    setText('sip-fv', formatSelectedMoney(result.futureValue));
     setPanelVisible(true);
     syncUrl(inputs);
 
@@ -221,6 +222,7 @@ export function initSipCalculator(): void {
     ro.observe(canvas);
   }
 
+  onCurrencyChange(calculate);
   calculate();
 }
 

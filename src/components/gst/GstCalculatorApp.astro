@@ -1,9 +1,14 @@
 ---
 import { gstDefaults, gstRatePresets } from '../../content/gst-calculator-page';
+import { DEFAULT_CURRENCY } from '../../config/currencies';
+import { formatMoney } from '../../lib/currency';
+import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
 ---
 
 <section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="gst-calc-heading">
   <h2 id="gst-calc-heading" class="sr-only">GST calculator</h2>
+
+  <CalculatorCurrencyBar toolId="gst" />
 
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:gap-10">
     <form id="gst-form" class="card space-y-8" novalidate>
@@ -28,7 +33,7 @@ import { gstDefaults, gstRatePresets } from '../../content/gst-calculator-page';
         <div class="flex items-baseline justify-between gap-4">
           <label class="label-field mb-0" for="gst-amount" id="gst-amount-label">Amount</label>
           <span id="gst-amount-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
-            >{gstDefaults.amount.toLocaleString()}</span
+            >{formatMoney(gstDefaults.amount, false, DEFAULT_CURRENCY)}</span
           >
         </div>
         <input
@@ -136,13 +141,13 @@ import { gstDefaults, gstRatePresets } from '../../content/gst-calculator-page';
 
 <script>
   import '../../scripts/gst-calculator.ts';
+  import { bindMoneyDisplay } from '../../scripts/currency-display.ts';
+
+  bindMoneyDisplay('gst-amount', 'gst-amount-display');
 
   function syncDisplays(): void {
-    const amount = document.getElementById('gst-amount') as HTMLInputElement | null;
     const rate = document.getElementById('gst-rate') as HTMLInputElement | null;
-    const amountD = document.getElementById('gst-amount-display');
     const rateD = document.getElementById('gst-rate-display');
-    if (amount && amountD) amountD.textContent = Number(amount.value).toLocaleString();
     if (rate && rateD) rateD.textContent = `${rate.value}%`;
   }
 

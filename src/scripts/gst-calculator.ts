@@ -1,5 +1,6 @@
 import { analyzeGst, type GstMode } from '../lib/finance';
-import { formatINR, parsePositiveNumber } from '../lib/format';
+import { onCurrencyChange } from '../lib/currency';
+import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 
 const PARAM_KEYS = { mode: 'm', amount: 'a', rate: 'r' } as const;
 
@@ -127,13 +128,13 @@ export function initGstCalculator(): void {
     const analysis = analyzeGst(inputs.amount, inputs.rate, inputs.mode);
     updateModeCopy(inputs.mode);
 
-    setText('gst-tax', formatINR(analysis.gstAmount, true));
-    setText('gst-final', formatINR(analysis.finalAmount, true));
+    setText('gst-tax', formatSelectedMoney(analysis.gstAmount, true));
+    setText('gst-final', formatSelectedMoney(analysis.finalAmount, true));
     setText(
       'gst-base',
       inputs.mode === 'add'
-        ? formatINR(analysis.baseAmount, true)
-        : formatINR(analysis.totalAmount, true),
+        ? formatSelectedMoney(analysis.baseAmount, true)
+        : formatSelectedMoney(analysis.totalAmount, true),
     );
 
     const baseShare = 1 - analysis.gstShare;
@@ -180,6 +181,7 @@ export function initGstCalculator(): void {
     }
   });
 
+  onCurrencyChange(calculate);
   calculate();
 }
 

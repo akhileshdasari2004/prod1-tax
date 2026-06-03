@@ -1,0 +1,47 @@
+---
+import CurrencySelector from './CurrencySelector.astro';
+
+interface Props {
+  /** Unique suffix for the select element, e.g. "sip" */
+  toolId: string;
+}
+
+const { toolId } = Astro.props;
+const selectId = `currency-select-${toolId}`;
+---
+
+<div class="calculator-currency-bar">
+  <div class="calculator-currency-bar__copy">
+    <p class="text-body-sm font-semibold" style="color: var(--text-primary);">Display currency</p>
+    <p class="text-caption mt-0.5" style="color: var(--text-tertiary);">
+      Format all amounts and results in your chosen currency. Default is US Dollar (USD).
+    </p>
+  </div>
+  <CurrencySelector id={selectId} variant="calculator" />
+</div>
+
+<style>
+  .calculator-currency-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-elevated);
+  }
+
+  @media (min-width: 640px) {
+    .calculator-currency-bar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .calculator-currency-bar__copy {
+      max-width: 28rem;
+    }
+  }
+</style>

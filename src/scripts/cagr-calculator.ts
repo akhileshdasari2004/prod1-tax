@@ -1,6 +1,7 @@
 import { analyzeCagr } from '../lib/finance';
 import type { CagrYearPoint } from '../lib/finance';
-import { formatCagrPercent, formatUSD, parsePositiveNumber } from '../lib/format';
+import { onCurrencyChange } from '../lib/currency';
+import { formatCagrPercent, formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 
 const PARAM_KEYS = { begin: 'b', end: 'e', years: 'y' } as const;
 
@@ -148,8 +149,8 @@ function renderTable(tbody: HTMLElement, series: CagrYearPoint[], begin: number)
       (row) => `
     <tr>
       <td>${row.year === 0 ? 'Start' : row.year}</td>
-      <td>${formatUSD(row.value)}</td>
-      <td>${formatUSD(row.value - begin)}</td>
+      <td>${formatSelectedMoney(row.value)}</td>
+      <td>${formatSelectedMoney(row.value - begin)}</td>
     </tr>`,
     )
     .join('');
@@ -197,7 +198,7 @@ export function initCagrCalculator(): void {
     }
 
     setText('cagr-percent', formatCagrPercent(analysis.cagr));
-    setText('cagr-gain', formatUSD(analysis.absoluteGain));
+    setText('cagr-gain', formatSelectedMoney(analysis.absoluteGain));
     setText(
       'cagr-total-return',
       new Intl.NumberFormat('en-US', {
@@ -247,6 +248,7 @@ export function initCagrCalculator(): void {
     ro.observe(canvas);
   }
 
+  onCurrencyChange(calculate);
   calculate();
 }
 

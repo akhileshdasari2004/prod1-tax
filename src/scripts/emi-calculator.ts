@@ -1,6 +1,7 @@
 import { analyzeEmi } from '../lib/finance';
 import type { EmiAmortizationRow, EmiYearPoint } from '../lib/finance';
-import { formatUSD, parsePositiveNumber } from '../lib/format';
+import { onCurrencyChange } from '../lib/currency';
+import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 
 const PARAM_KEYS = { principal: 'p', rate: 'r', years: 'y' } as const;
 
@@ -140,10 +141,10 @@ function renderAmortTable(tbody: HTMLElement, schedule: EmiAmortizationRow[]): v
       (row) => `
     <tr>
       <td>${row.month}</td>
-      <td>${formatUSD(row.emi, true)}</td>
-      <td>${formatUSD(row.principalPaid, true)}</td>
-      <td>${formatUSD(row.interestPaid, true)}</td>
-      <td>${formatUSD(row.balance)}</td>
+      <td>${formatSelectedMoney(row.emi, true)}</td>
+      <td>${formatSelectedMoney(row.principalPaid, true)}</td>
+      <td>${formatSelectedMoney(row.interestPaid, true)}</td>
+      <td>${formatSelectedMoney(row.balance)}</td>
     </tr>`,
     )
     .join('');
@@ -190,9 +191,9 @@ export function initEmiCalculator(): void {
       return;
     }
 
-    setText('emi-monthly', formatUSD(analysis.emi, true));
-    setText('emi-interest', formatUSD(analysis.totalInterest));
-    setText('emi-total', formatUSD(analysis.totalPayment));
+    setText('emi-monthly', formatSelectedMoney(analysis.emi, true));
+    setText('emi-interest', formatSelectedMoney(analysis.totalInterest));
+    setText('emi-total', formatSelectedMoney(analysis.totalPayment));
     setPanelVisible(true);
     syncUrl(inputs);
 
@@ -234,6 +235,7 @@ export function initEmiCalculator(): void {
     ro.observe(canvas);
   }
 
+  onCurrencyChange(calculate);
   calculate();
 }
 

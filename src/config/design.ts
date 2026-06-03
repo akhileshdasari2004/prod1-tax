@@ -36,6 +36,7 @@ export const design = {
   },
   motion: {
     themeStorageKey: 'fth-theme',
+    currencyStorageKey: 'fth-currency',
     easeStandard: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
     durationNormal: 250,
   },

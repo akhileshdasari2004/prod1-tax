@@ -1,9 +1,14 @@
 ---
 import { sipDefaults } from '../../content/sip-calculator-page';
+import { DEFAULT_CURRENCY } from '../../config/currencies';
+import { formatMoney } from '../../lib/currency';
+import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
 ---
 
 <section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="sip-calc-heading">
   <h2 id="sip-calc-heading" class="sr-only">SIP calculator</h2>
+
+  <CalculatorCurrencyBar toolId="sip" />
 
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:gap-10">
     <form id="sip-form" class="card space-y-8" novalidate>
@@ -11,7 +16,7 @@ import { sipDefaults } from '../../content/sip-calculator-page';
         <div class="flex items-baseline justify-between gap-4">
           <label class="label-field mb-0" for="sip-amount">Monthly investment</label>
           <span id="sip-amount-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
-            >{sipDefaults.monthly.toLocaleString()}</span
+            >{formatMoney(sipDefaults.monthly, false, DEFAULT_CURRENCY)}</span
           >
         </div>
         <input
@@ -37,7 +42,7 @@ import { sipDefaults } from '../../content/sip-calculator-page';
           class="sip-range mt-3"
           aria-label="Monthly investment slider"
         />
-        <p id="sip-amount-hint" class="field-hint">Fixed amount you invest each month (USD). Works with any currency unit in the formula.</p>
+        <p id="sip-amount-hint" class="field-hint">Fixed amount you invest each month, shown in your selected currency.</p>
       </div>
 
       <div>
@@ -167,15 +172,15 @@ import { sipDefaults } from '../../content/sip-calculator-page';
 
 <script>
   import '../../scripts/sip-calculator.ts';
+  import { bindMoneyDisplay } from '../../scripts/currency-display.ts';
+
+  bindMoneyDisplay('sip-amount', 'sip-amount-display');
 
   function syncDisplays(): void {
-    const amount = document.getElementById('sip-amount') as HTMLInputElement | null;
     const rate = document.getElementById('sip-rate') as HTMLInputElement | null;
     const years = document.getElementById('sip-years') as HTMLInputElement | null;
-    const amountD = document.getElementById('sip-amount-display');
     const rateD = document.getElementById('sip-rate-display');
     const yearsD = document.getElementById('sip-years-display');
-    if (amount && amountD) amountD.textContent = Number(amount.value).toLocaleString();
     if (rate && rateD) rateD.textContent = `${rate.value}%`;
     if (years && yearsD) yearsD.textContent = `${years.value} years`;
   }

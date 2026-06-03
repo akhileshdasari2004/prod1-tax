@@ -1,6 +1,7 @@
 ---
 import { SITE } from '../config/site';
 import { primaryNav } from '../config/navigation';
+import CurrencySelector from './CurrencySelector.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -50,6 +51,7 @@ function isActive(href: string): boolean {
     </nav>
 
     <div class="flex items-center gap-2">
+      <CurrencySelector />
       <ThemeToggle />
       <button
         type="button"
@@ -68,6 +70,9 @@ function isActive(href: string): boolean {
 
   <div id="mobile-menu" class="hidden border-t md:hidden" style="border-color: var(--border-subtle);" hidden>
     <nav class="container-page flex flex-col gap-1 py-4" aria-label="Mobile primary">
+      <div class="mb-3 md:hidden">
+        <CurrencySelector id="currency-select-mobile" showLabel />
+      </div>
       {
         primaryNav.map((item) => (
           <a

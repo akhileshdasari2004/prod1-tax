@@ -1,9 +1,14 @@
 ---
 import { lumpsumDefaults } from '../../content/lumpsum-calculator-page';
+import { DEFAULT_CURRENCY } from '../../config/currencies';
+import { formatMoney } from '../../lib/currency';
+import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
 ---
 
 <section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="ls-calc-heading">
   <h2 id="ls-calc-heading" class="sr-only">Lumpsum calculator</h2>
+
+  <CalculatorCurrencyBar toolId="lumpsum" />
 
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:gap-10">
     <form id="lumpsum-form" class="card space-y-8" novalidate>
@@ -11,7 +16,7 @@ import { lumpsumDefaults } from '../../content/lumpsum-calculator-page';
         <div class="flex items-baseline justify-between gap-4">
           <label class="label-field mb-0" for="ls-principal">Initial investment</label>
           <span id="ls-principal-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
-            >{lumpsumDefaults.principal.toLocaleString()}</span
+            >{formatMoney(lumpsumDefaults.principal, false, DEFAULT_CURRENCY)}</span
           >
         </div>
         <input
@@ -37,7 +42,7 @@ import { lumpsumDefaults } from '../../content/lumpsum-calculator-page';
           class="calc-range mt-3"
           aria-label="Initial investment slider"
         />
-        <p id="ls-principal-hint" class="field-hint">One-time amount invested upfront (USD or any currency unit).</p>
+        <p id="ls-principal-hint" class="field-hint">One-time amount invested upfront in your selected currency.</p>
       </div>
 
       <div>
@@ -162,15 +167,15 @@ import { lumpsumDefaults } from '../../content/lumpsum-calculator-page';
 
 <script>
   import '../../scripts/lumpsum-calculator.ts';
+  import { bindMoneyDisplay } from '../../scripts/currency-display.ts';
+
+  bindMoneyDisplay('ls-principal', 'ls-principal-display');
 
   function syncDisplays(): void {
-    const principal = document.getElementById('ls-principal') as HTMLInputElement | null;
     const rate = document.getElementById('ls-rate') as HTMLInputElement | null;
     const years = document.getElementById('ls-years') as HTMLInputElement | null;
-    const principalD = document.getElementById('ls-principal-display');
     const rateD = document.getElementById('ls-rate-display');
     const yearsD = document.getElementById('ls-years-display');
-    if (principal && principalD) principalD.textContent = Number(principal.value).toLocaleString();
     if (rate && rateD) rateD.textContent = `${rate.value}%`;
     if (years && yearsD) yearsD.textContent = `${years.value} years`;
   }

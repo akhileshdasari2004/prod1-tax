@@ -1,9 +1,14 @@
 ---
 import { cagrDefaults } from '../../content/cagr-calculator-page';
+import { DEFAULT_CURRENCY } from '../../config/currencies';
+import { formatMoney } from '../../lib/currency';
+import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
 ---
 
 <section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="cagr-calc-heading">
   <h2 id="cagr-calc-heading" class="sr-only">CAGR calculator</h2>
+
+  <CalculatorCurrencyBar toolId="cagr" />
 
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:gap-10">
     <form id="cagr-form" class="card space-y-8" novalidate>
@@ -11,7 +16,7 @@ import { cagrDefaults } from '../../content/cagr-calculator-page';
         <div class="flex items-baseline justify-between gap-4">
           <label class="label-field mb-0" for="cagr-begin">Beginning value</label>
           <span id="cagr-begin-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
-            >{cagrDefaults.beginning.toLocaleString()}</span
+            >{formatMoney(cagrDefaults.beginning, false, DEFAULT_CURRENCY)}</span
           >
         </div>
         <input
@@ -37,14 +42,14 @@ import { cagrDefaults } from '../../content/cagr-calculator-page';
           class="calc-range mt-3"
           aria-label="Beginning value slider"
         />
-        <p id="cagr-begin-hint" class="field-hint">Starting portfolio or investment balance (USD or any currency unit).</p>
+        <p id="cagr-begin-hint" class="field-hint">Starting portfolio or investment balance in your selected currency.</p>
       </div>
 
       <div>
         <div class="flex items-baseline justify-between gap-4">
           <label class="label-field mb-0" for="cagr-end">Ending value</label>
           <span id="cagr-end-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
-            >{cagrDefaults.ending.toLocaleString()}</span
+            >{formatMoney(cagrDefaults.ending, false, DEFAULT_CURRENCY)}</span
           >
         </div>
         <input
@@ -163,16 +168,14 @@ import { cagrDefaults } from '../../content/cagr-calculator-page';
 
 <script>
   import '../../scripts/cagr-calculator.ts';
+  import { bindMoneyDisplay } from '../../scripts/currency-display.ts';
+
+  bindMoneyDisplay('cagr-begin', 'cagr-begin-display');
+  bindMoneyDisplay('cagr-end', 'cagr-end-display');
 
   function syncDisplays(): void {
-    const begin = document.getElementById('cagr-begin') as HTMLInputElement | null;
-    const end = document.getElementById('cagr-end') as HTMLInputElement | null;
     const years = document.getElementById('cagr-years') as HTMLInputElement | null;
-    const beginD = document.getElementById('cagr-begin-display');
-    const endD = document.getElementById('cagr-end-display');
     const yearsD = document.getElementById('cagr-years-display');
-    if (begin && beginD) beginD.textContent = Number(begin.value).toLocaleString();
-    if (end && endD) endD.textContent = Number(end.value).toLocaleString();
     if (years && yearsD) yearsD.textContent = `${years.value} years`;
   }
 

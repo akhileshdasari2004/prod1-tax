@@ -111,7 +111,7 @@ export function WhyFeatures({ title, intro, pillars }: WhyFeaturesProps) {
 
 function SpeedVisual() {
   const rows = [
-    { label: 'Monthly SIP', value: '₹10,000', width: '72%' },
+    { label: 'Monthly SIP', value: '$10,000', width: '72%' },
     { label: 'Expected return', value: '12%', width: '48%' },
     { label: 'Time horizon', value: '15 yrs', width: '60%' },
   ];
@@ -155,7 +155,7 @@ function SpeedVisual() {
         ))}
         <div className="mt-2 flex items-baseline justify-between rounded-lg bg-[color:var(--accent-muted)] px-3 py-2">
           <span className="text-caption text-muted-foreground">Projected value</span>
-          <span className="text-sm font-semibold tabular-nums text-primary">₹52.4L</span>
+          <span className="text-sm font-semibold tabular-nums text-primary">$524K</span>
         </div>
       </div>
     </div>

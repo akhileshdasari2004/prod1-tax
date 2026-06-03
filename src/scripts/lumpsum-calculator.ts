@@ -1,6 +1,7 @@
 import { lumpsumFutureValue, lumpsumProjectionByYear } from '../lib/finance';
 import type { LumpsumYearPoint } from '../lib/finance';
-import { formatUSD, parsePositiveNumber } from '../lib/format';
+import { onCurrencyChange } from '../lib/currency';
+import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 
 const PARAM_KEYS = { principal: 'p', rate: 'r', years: 'y' } as const;
 
@@ -135,8 +136,8 @@ function renderTable(tbody: HTMLElement, series: LumpsumYearPoint[]): void {
       (row) => `
     <tr>
       <td>${row.year}</td>
-      <td>${formatUSD(row.futureValue)}</td>
-      <td>${formatUSD(row.profitEarned)}</td>
+      <td>${formatSelectedMoney(row.futureValue)}</td>
+      <td>${formatSelectedMoney(row.profitEarned)}</td>
     </tr>`,
     )
     .join('');
@@ -180,8 +181,8 @@ export function initLumpsumCalculator(): void {
     const result = lumpsumFutureValue(inputs.principal, inputs.rate, inputs.years);
     const series = lumpsumProjectionByYear(inputs.principal, inputs.rate, inputs.years);
 
-    setText('ls-fv', formatUSD(result.futureValue));
-    setText('ls-profit', formatUSD(result.profitEarned));
+    setText('ls-fv', formatSelectedMoney(result.futureValue));
+    setText('ls-profit', formatSelectedMoney(result.profitEarned));
     setPanelVisible(true);
     syncUrl(inputs);
 
@@ -223,6 +224,7 @@ export function initLumpsumCalculator(): void {
     ro.observe(canvas);
   }
 
+  onCurrencyChange(calculate);
   calculate();
 }
 
