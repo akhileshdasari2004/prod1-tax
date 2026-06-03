@@ -263,23 +263,28 @@ interface CircularUIProps {
   className?: string;
 }
 
+function circleClassName(pattern: CircleConfig['pattern']): string {
+  const base = 'size-7 rounded-full border sm:size-8';
+  switch (pattern) {
+    case 'none':
+      return `${base} border-primary`;
+    case 'border':
+      return `${base} border-primary bg-[repeating-linear-gradient(-45deg,var(--border-default),var(--border-default)_1px,transparent_1px,transparent_4px)]`;
+    case 'primary':
+      return `${base} border-primary bg-[color:var(--bg-primary)] bg-[repeating-linear-gradient(-45deg,var(--accent),var(--accent)_1px,transparent_1px,transparent_4px)]`;
+    case 'blue':
+      return `${base} z-1 border-blue-500 bg-[color:var(--bg-primary)] bg-[repeating-linear-gradient(-45deg,#3b82f6,#3b82f6_1px,transparent_1px,transparent_4px)]`;
+    default:
+      return base;
+  }
+}
+
 const CircularUI = ({ label, circles, className }: CircularUIProps) => (
   <div className={className}>
     <div className="size-fit rounded-2xl bg-gradient-to-b from-[color:var(--border-default)] to-transparent p-px">
       <div className="relative flex aspect-square w-fit items-center -space-x-4 rounded-[15px] bg-gradient-to-b from-[color:var(--bg-primary)] to-[color:var(--bg-secondary)]/40 p-4">
         {circles.map((circle, i) => (
-          <div
-            key={i}
-            className={cn('size-7 rounded-full border sm:size-8', {
-              'border-primary': circle.pattern === 'none',
-              'border-primary bg-[repeating-linear-gradient(-45deg,var(--border-default),var(--border-default)_1px,transparent_1px,transparent_4px)]':
-                circle.pattern === 'border',
-              'border-primary bg-[color:var(--bg-primary)] bg-[repeating-linear-gradient(-45deg,var(--accent),var(--accent)_1px,transparent_1px,transparent_4px)]':
-                circle.pattern === 'primary',
-              'z-1 border-blue-500 bg-[color:var(--bg-primary)] bg-[repeating-linear-gradient(-45deg,#3b82f6,#3b82f6_1px,transparent_1px,transparent_4px)]':
-                circle.pattern === 'blue',
-            })}
-          />
+          <div key={i} className={circleClassName(circle.pattern)} />
         ))}
       </div>
     </div>

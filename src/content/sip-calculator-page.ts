@@ -1,4 +1,4 @@
-import type { FAQItem } from '../components/FAQSection.astro';
+import type { FAQItem } from '../types/faq';
 
 export const sipPageMeta = {
   title: 'SIP Calculator',
@@ -156,9 +156,9 @@ export const sipFaqs: FAQItem[] = [
       'This version models a fixed monthly installment. For a step-up SIP (annual increase), run multiple scenarios with higher monthly amounts or add the planned increase manually to your final-year contribution estimate.',
   },
   {
-    question: 'Can I use dollars instead of rupees?',
+    question: 'Can I use different currencies?',
     answer:
-      'Yes. The formula is currency-agnostic. Enter amounts in any currency; outputs use the same unit. Formatting on this page uses Indian locale grouping by default, but the mathematics is identical for USD or other currencies.',
+      'Yes. The formula is currency-agnostic. Use the currency selector to format amounts in USD, INR, EUR, or 40+ other currencies. This changes display formatting only — it does not convert exchange rates.',
   },
   {
     question: 'What expected return should I assume?',

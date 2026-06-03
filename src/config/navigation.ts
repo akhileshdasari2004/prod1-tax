@@ -9,6 +9,8 @@ export const primaryNav: NavItem[] = [
   { label: 'Investing', href: '/investing' },
   { label: 'Loans', href: '/loans' },
   { label: 'Taxes', href: '/taxes' },
+  { label: 'About', href: '/about' },
+  { label: 'Privacy', href: '/privacy' },
 ];
 
 export const footerNav = {

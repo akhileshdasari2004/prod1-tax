@@ -1,3 +1,4 @@
+import { bindRange, setFormError } from '../lib/calculator-form';
 import { analyzeCagr } from '../lib/finance';
 import type { CagrYearPoint } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
@@ -156,19 +157,6 @@ function renderTable(tbody: HTMLElement, series: CagrYearPoint[], begin: number)
     .join('');
 }
 
-function bindRange(
-  input: HTMLInputElement,
-  range: HTMLInputElement,
-  onChange: () => void,
-): void {
-  const sync = (source: HTMLInputElement, target: HTMLInputElement) => {
-    target.value = source.value;
-    onChange();
-  };
-  input.addEventListener('input', () => sync(input, range));
-  range.addEventListener('input', () => sync(range, input));
-}
-
 export function initCagrCalculator(): void {
   const form = document.getElementById('cagr-form');
   if (!(form instanceof HTMLFormElement)) return;
@@ -187,16 +175,22 @@ export function initCagrCalculator(): void {
   const calculate = () => {
     const inputs = readInputs(form);
     if (!inputs) {
+      setFormError(
+        form,
+        'Enter a beginning value, ending value, and duration between 1 and 50 years.',
+      );
       setPanelVisible(false);
       return;
     }
 
     const analysis = analyzeCagr(inputs.begin, inputs.end, inputs.years);
     if (!analysis) {
+      setFormError(form, 'Ending value must be greater than the beginning value to calculate CAGR.');
       setPanelVisible(false);
       return;
     }
 
+    setFormError(form, null);
     setText('cagr-percent', formatCagrPercent(analysis.cagr));
     setText('cagr-gain', formatSelectedMoney(analysis.absoluteGain));
     setText(

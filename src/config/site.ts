@@ -2,14 +2,14 @@ export const SITE = {
   name: 'FinanceToolsHub',
   title: 'FinanceToolsHub — Free Finance Calculators & Tools',
   description:
-    'Professional financial calculators for investing, loans, taxes, retirement planning, and wealth building. Fast, accurate, and private — no registration required.',
+    'Professional financial calculators for investing, loans, and taxes. Fast, accurate, and private — no registration required.',
   url: 'https://financetoolshub.com',
   locale: 'en-US',
   language: 'en',
   author: 'FinanceToolsHub',
   email: 'hello@financetoolshub.com',
   twitterHandle: '@financetoolshub',
-  ogImage: '/og-default.svg',
+  ogImage: '/og-default.jpg',
   themeColor: '#ffffff',
 } as const;
 

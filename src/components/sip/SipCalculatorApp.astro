@@ -3,6 +3,7 @@ import { sipDefaults } from '../../content/sip-calculator-page';
 import { DEFAULT_CURRENCY } from '../../config/currencies';
 import { formatMoney } from '../../lib/currency';
 import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
+import CalculatorDisclaimer from '../CalculatorDisclaimer.astro';
 ---
 
 <section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="sip-calc-heading">
@@ -100,7 +101,7 @@ import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
           id="sip-years-range"
           type="range"
           min="1"
-          max="40"
+          max="50"
           step="1"
           value={sipDefaults.years}
           class="sip-range mt-3"
@@ -112,7 +113,7 @@ import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
     <aside id="sip-results-panel" class="results-panel lg:sticky lg:top-24" hidden aria-live="polite">
       <div class="flex items-start justify-between gap-4">
         <h3 class="text-title-4">Results</h3>
-        <button type="button" id="sip-share-btn" class="btn-ghost min-h-9 px-3 text-caption">
+        <button type="button" id="sip-share-btn" class="btn-ghost min-h-11 min-w-[44px] px-3 text-caption">
           Copy share link
         </button>
       </div>
@@ -142,6 +143,7 @@ import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
           <span class="sip-legend-dot" style="background: var(--success);"></span> Wealth gained
         </li>
       </ul>
+      <CalculatorDisclaimer />
     </aside>
   </div>
 </section>

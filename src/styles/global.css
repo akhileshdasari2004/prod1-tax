@@ -280,6 +280,76 @@
     box-shadow: none;
   }
 
+  .card-accent {
+    background: linear-gradient(
+      160deg,
+      rgba(0, 113, 227, 0.06) 0%,
+      rgba(0, 113, 227, 0.14) 100%
+    );
+    border-color: rgba(0, 113, 227, 0.22);
+    box-shadow: 0 4px 24px rgba(0, 113, 227, 0.1);
+  }
+
+  html.dark .card-accent {
+    background: linear-gradient(
+      160deg,
+      rgba(41, 151, 255, 0.1) 0%,
+      rgba(41, 151, 255, 0.18) 100%
+    );
+    border-color: rgba(41, 151, 255, 0.28);
+    box-shadow: 0 4px 24px rgba(41, 151, 255, 0.12);
+  }
+
+  .card-accent h3 a {
+    color: var(--accent);
+  }
+
+  .card-accent .link-arrow {
+    color: var(--accent);
+  }
+
+  .calc-grid-cell {
+    position: relative;
+    display: block;
+    height: 100%;
+    transition: color var(--duration-normal) var(--ease-standard);
+  }
+
+  .calc-grid-cell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      160deg,
+      rgba(0, 113, 227, 0.06) 0%,
+      rgba(0, 113, 227, 0.16) 100%
+    );
+    transition: opacity var(--duration-normal) var(--ease-standard);
+  }
+
+  html.dark .calc-grid-cell::before {
+    background: linear-gradient(
+      160deg,
+      rgba(41, 151, 255, 0.1) 0%,
+      rgba(41, 151, 255, 0.2) 100%
+    );
+  }
+
+  .calc-grid-cell:hover::before,
+  .calc-grid-cell:focus-visible::before {
+    opacity: 1;
+  }
+
+  .calc-grid-cell:hover .calc-grid-cell-icon,
+  .calc-grid-cell:focus-visible .calc-grid-cell-icon,
+  .calc-grid-cell:hover .calc-grid-cell-title,
+  .calc-grid-cell:focus-visible .calc-grid-cell-title {
+    color: var(--accent);
+  }
+
   /* Forms */
   .input-field {
     width: 100%;
@@ -321,6 +391,27 @@
   .field-hint {
     margin-top: var(--space-2);
     font-size: var(--text-caption-size);
+    color: var(--text-tertiary);
+  }
+
+  .calc-form-error {
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 59, 48, 0.25);
+    background-color: rgba(255, 59, 48, 0.08);
+    font-size: var(--text-body-sm-size);
+    color: var(--error);
+  }
+
+  .calc-form-error[hidden] {
+    display: none;
+  }
+
+  .calc-disclaimer {
+    margin-top: var(--space-4);
+    font-size: var(--text-caption-size);
+    line-height: var(--text-caption-leading);
     color: var(--text-tertiary);
   }
 

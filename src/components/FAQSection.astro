@@ -1,8 +1,6 @@
 ---
-export type FAQItem = {
-  question: string;
-  answer: string;
-};
+export type { FAQItem } from '../types/faq';
+import type { FAQItem } from '../types/faq';
 
 interface Props {
   title?: string;
@@ -56,4 +54,4 @@ const faqJsonLd = embedSchema
   </div>
 </section>
 
-{faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+{faqJsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}

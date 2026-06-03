@@ -65,5 +65,5 @@ export const homeSeoArticle = {
     },
   ] satisfies ArticleSection[],
   authorNote:
-    'Written by the FinanceToolsHub editorial team. We update guides when formulas or labels change on our tools. Report inaccuracies via our contact page. Last reviewed June 2025.',
+    'Written by the FinanceToolsHub editorial team. We update guides when formulas or labels change on our tools. Report inaccuracies via our contact page. Last reviewed June 2026.',
 } as const;

@@ -3,6 +3,7 @@ import { gstDefaults, gstRatePresets } from '../../content/gst-calculator-page';
 import { DEFAULT_CURRENCY } from '../../config/currencies';
 import { formatMoney } from '../../lib/currency';
 import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
+import CalculatorDisclaimer from '../CalculatorDisclaimer.astro';
 ---
 
 <section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="gst-calc-heading">
@@ -20,7 +21,7 @@ import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
             Add GST
           </label>
           <label>
-            <input type="radio" name="mode" value="remove" checked={gstDefaults.mode === 'remove'} />
+            <input type="radio" name="mode" value="remove" />
             Remove GST
           </label>
         </div>
@@ -135,6 +136,7 @@ import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
           </li>
         </ul>
       </div>
+      <CalculatorDisclaimer />
     </aside>
   </div>
 </section>

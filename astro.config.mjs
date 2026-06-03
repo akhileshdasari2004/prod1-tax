@@ -22,7 +22,7 @@ export default defineConfig({
     serialize(item) {
       const url = item.url.replace(/\/$/, '');
       if (url === 'https://financetoolshub.com') {
-        return { ...item, priority: 1.0, changefreq: 'weekly' };
+        return { ...item, priority: 1.0 };
       }
       const calculatorPaths = [
         '/sip-calculator',
@@ -32,16 +32,16 @@ export default defineConfig({
         '/gst-calculator',
       ];
       if (calculatorPaths.some((path) => url.endsWith(path))) {
-        return { ...item, priority: 0.9, changefreq: 'monthly' };
+        return { ...item, priority: 0.9 };
       }
       if (url.endsWith('/calculators')) {
-        return { ...item, priority: 0.85, changefreq: 'weekly' };
+        return { ...item, priority: 0.85 };
       }
       const hubPaths = ['/investing', '/loans', '/taxes'];
       if (hubPaths.some((path) => url.endsWith(path))) {
-        return { ...item, priority: 0.8, changefreq: 'weekly' };
+        return { ...item, priority: 0.8 };
       }
-      return { ...item, priority: 0.6, changefreq: 'monthly' };
+      return { ...item, priority: 0.6 };
     },
   }), react()],
   vite: {

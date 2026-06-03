@@ -1,4 +1,4 @@
-import type { FAQItem } from '../components/FAQSection.astro';
+import type { FAQItem } from '../types/faq';
 
 export const emiPageMeta = {
   title: 'EMI Calculator',

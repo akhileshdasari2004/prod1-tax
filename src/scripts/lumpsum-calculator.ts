@@ -1,3 +1,4 @@
+import { bindRange, setFormError } from '../lib/calculator-form';
 import { lumpsumFutureValue, lumpsumProjectionByYear } from '../lib/finance';
 import type { LumpsumYearPoint } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
@@ -143,19 +144,6 @@ function renderTable(tbody: HTMLElement, series: LumpsumYearPoint[]): void {
     .join('');
 }
 
-function bindRange(
-  input: HTMLInputElement,
-  range: HTMLInputElement,
-  onChange: () => void,
-): void {
-  const sync = (source: HTMLInputElement, target: HTMLInputElement) => {
-    target.value = source.value;
-    onChange();
-  };
-  input.addEventListener('input', () => sync(input, range));
-  range.addEventListener('input', () => sync(range, input));
-}
-
 export function initLumpsumCalculator(): void {
   const form = document.getElementById('lumpsum-form');
   if (!(form instanceof HTMLFormElement)) return;
@@ -174,10 +162,15 @@ export function initLumpsumCalculator(): void {
   const calculate = () => {
     const inputs = readInputs(form);
     if (!inputs) {
+      setFormError(
+        form,
+        'Enter an initial investment, expected return, and duration between 1 and 50 years.',
+      );
       setPanelVisible(false);
       return;
     }
 
+    setFormError(form, null);
     const result = lumpsumFutureValue(inputs.principal, inputs.rate, inputs.years);
     const series = lumpsumProjectionByYear(inputs.principal, inputs.rate, inputs.years);
 

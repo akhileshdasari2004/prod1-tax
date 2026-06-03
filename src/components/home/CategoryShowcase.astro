@@ -23,7 +23,7 @@ const categoryTools = {
   <div class="mt-10 grid gap-6 lg:grid-cols-3">
     {
       categoryShowcase.map((category) => (
-        <article class="card card-muted flex flex-col">
+        <article class:list={['card flex flex-col', category.id === 'loans' ? 'card-accent' : 'card-muted']}>
           <h3 class="text-title-3">
             <a href={category.href} class="transition-opacity hover:opacity-70" style="color: inherit;">
               {category.title}

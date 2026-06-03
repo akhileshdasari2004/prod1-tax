@@ -1,10 +1,10 @@
-import type { FAQItem } from '../components/FAQSection.astro';
+import type { FAQItem } from '../types/faq';
 
 export const homeHero = {
   eyebrow: 'Free financial tools',
-  headline: 'Financial Calculators Designed For Clarity 🤚',
+  headline: 'Financial calculators designed for clarity 🤚',
   subheadline:
-    'Professional financial calculators for investing, loans, taxes, retirement planning, and wealth building.',
+    'Professional calculators for investing, loans, and taxes — fast, accurate, and private. No registration required.',
   ctaLabel: 'Explore Calculators',
   ctaHref: '/calculators',
 } as const;
@@ -30,6 +30,28 @@ export const categoryShowcase = [
     href: '/taxes',
     description:
       'Split tax-inclusive and tax-exclusive amounts for invoices, estimates, and small-business bookkeeping.',
+  },
+] as const;
+
+export const trustBarItems = [
+  {
+    title: 'Editorial standard',
+    bodyBefore:
+      'Educational content is reviewed for clarity and formula accuracy. See our ',
+    link: { label: 'about page', href: '/about' },
+    bodyAfter: ' for how we work.',
+  },
+  {
+    title: 'Privacy-first',
+    bodyBefore: 'Calculations run in your browser. Read our ',
+    link: { label: 'privacy policy', href: '/privacy' },
+    bodyAfter: ' for details on data handling.',
+  },
+  {
+    title: 'Not financial advice',
+    bodyBefore: 'FinanceToolsHub provides tools and information, not personalized recommendations. Review our ',
+    link: { label: 'terms of use', href: '/terms' },
+    bodyAfter: '.',
   },
 ] as const;
 

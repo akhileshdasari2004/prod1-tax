@@ -2,16 +2,6 @@ export const CURRENCY_STORAGE_KEY = 'fth-currency';
 
 export const DEFAULT_CURRENCY = 'USD' as const;
 
-export type CurrencyCode = (typeof CURRENCIES)[number]['code'];
-
-export type CurrencyDefinition = {
-  code: CurrencyCode;
-  label: string;
-  locale: string;
-  /** ISO 4217 currencies with no minor units */
-  zeroDecimal?: boolean;
-};
-
 export const CURRENCIES = [
   { code: 'USD', label: 'US Dollar', locale: 'en-US' },
   { code: 'EUR', label: 'Euro', locale: 'en-IE' },
@@ -58,9 +48,21 @@ export const CURRENCIES = [
   { code: 'NPR', label: 'Nepalese Rupee', locale: 'ne-NP' },
   { code: 'RUB', label: 'Russian Ruble', locale: 'ru-RU' },
   { code: 'UAH', label: 'Ukrainian Hryvnia', locale: 'uk-UA' },
-] as const satisfies readonly CurrencyDefinition[];
+] as const;
 
-const currencyByCode = new Map(CURRENCIES.map((currency) => [currency.code, currency]));
+export type CurrencyCode = (typeof CURRENCIES)[number]['code'];
+
+export type CurrencyDefinition = {
+  code: CurrencyCode;
+  label: string;
+  locale: string;
+  /** ISO 4217 currencies with no minor units */
+  zeroDecimal?: boolean;
+};
+
+const currencyByCode = new Map<CurrencyCode, CurrencyDefinition>(
+  CURRENCIES.map((currency) => [currency.code, currency]),
+);
 
 export function isCurrencyCode(value: string): value is CurrencyCode {
   return currencyByCode.has(value as CurrencyCode);

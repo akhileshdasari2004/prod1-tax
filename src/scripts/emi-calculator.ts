@@ -1,3 +1,4 @@
+import { bindRange, setFormError } from '../lib/calculator-form';
 import { analyzeEmi } from '../lib/finance';
 import type { EmiAmortizationRow, EmiYearPoint } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
@@ -150,19 +151,6 @@ function renderAmortTable(tbody: HTMLElement, schedule: EmiAmortizationRow[]): v
     .join('');
 }
 
-function bindRange(
-  input: HTMLInputElement,
-  range: HTMLInputElement,
-  onChange: () => void,
-): void {
-  const sync = (source: HTMLInputElement, target: HTMLInputElement) => {
-    target.value = source.value;
-    onChange();
-  };
-  input.addEventListener('input', () => sync(input, range));
-  range.addEventListener('input', () => sync(range, input));
-}
-
 export function initEmiCalculator(): void {
   const form = document.getElementById('emi-form');
   if (!(form instanceof HTMLFormElement)) return;
@@ -181,16 +169,22 @@ export function initEmiCalculator(): void {
   const calculate = () => {
     const inputs = readInputs(form);
     if (!inputs) {
+      setFormError(
+        form,
+        'Enter a loan amount, interest rate, and term between 1 and 40 years.',
+      );
       setPanelVisible(false);
       return;
     }
 
     const analysis = analyzeEmi(inputs.principal, inputs.rate, tenureMonths(inputs.years));
     if (!analysis) {
+      setFormError(form, 'Could not calculate EMI with these values. Check your inputs and try again.');
       setPanelVisible(false);
       return;
     }
 
+    setFormError(form, null);
     setText('emi-monthly', formatSelectedMoney(analysis.emi, true));
     setText('emi-interest', formatSelectedMoney(analysis.totalInterest));
     setText('emi-total', formatSelectedMoney(analysis.totalPayment));

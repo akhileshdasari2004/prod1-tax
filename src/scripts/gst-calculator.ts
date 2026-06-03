@@ -1,3 +1,4 @@
+import { bindRange, setFormError } from '../lib/calculator-form';
 import { analyzeGst, type GstMode } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
 import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
@@ -95,19 +96,6 @@ function syncRateChips(rate: number): void {
   });
 }
 
-function bindRange(
-  input: HTMLInputElement,
-  range: HTMLInputElement,
-  onChange: () => void,
-): void {
-  const sync = (source: HTMLInputElement, target: HTMLInputElement) => {
-    target.value = source.value;
-    onChange();
-  };
-  input.addEventListener('input', () => sync(input, range));
-  range.addEventListener('input', () => sync(range, input));
-}
-
 export function initGstCalculator(): void {
   const form = document.getElementById('gst-form');
   if (!(form instanceof HTMLFormElement)) return;
@@ -121,10 +109,12 @@ export function initGstCalculator(): void {
   const calculate = () => {
     const inputs = readInputs(form);
     if (!inputs) {
+      setFormError(form, 'Enter a valid amount and tax rate between 0 and 100%.');
       setPanelVisible(false);
       return;
     }
 
+    setFormError(form, null);
     const analysis = analyzeGst(inputs.amount, inputs.rate, inputs.mode);
     updateModeCopy(inputs.mode);
 

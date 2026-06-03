@@ -3,6 +3,7 @@ import { emiDefaults } from '../../content/emi-calculator-page';
 import { DEFAULT_CURRENCY } from '../../config/currencies';
 import { formatMoney } from '../../lib/currency';
 import CalculatorCurrencyBar from '../CalculatorCurrencyBar.astro';
+import CalculatorDisclaimer from '../CalculatorDisclaimer.astro';
 
 const tenureMonths = emiDefaults.years * 12;
 ---
@@ -148,6 +149,7 @@ const tenureMonths = emiDefaults.years * 12;
           <span class="sip-legend-dot" style="background: var(--warning, #ff9500);"></span> Interest
         </li>
       </ul>
+      <CalculatorDisclaimer />
     </aside>
   </div>
 </section>
