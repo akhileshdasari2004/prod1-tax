@@ -1,0 +1,15 @@
+---
+import type { CalculatorMeta } from '../config/calculators';
+
+interface Props {
+  calculator: CalculatorMeta;
+}
+
+const { calculator } = Astro.props;
+---
+
+<a href={calculator.href} class="card card-interactive block h-full">
+  <h3 class="text-title-4">{calculator.name}</h3>
+  <p class="text-body-sm mt-3">{calculator.shortDescription}</p>
+  <span class="link-arrow mt-6 inline-flex text-body-sm">Use {calculator.name}</span>
+</a>

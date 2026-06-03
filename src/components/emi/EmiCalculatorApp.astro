@@ -1,0 +1,202 @@
+---
+import { emiDefaults } from '../../content/emi-calculator-page';
+
+const tenureMonths = emiDefaults.years * 12;
+---
+
+<section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="emi-calc-heading">
+  <h2 id="emi-calc-heading" class="sr-only">EMI calculator</h2>
+
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:gap-10">
+    <form id="emi-form" class="card space-y-8" novalidate>
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="emi-principal">Loan amount</label>
+          <span id="emi-principal-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{emiDefaults.principal.toLocaleString()}</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="emi-principal"
+          name="principal"
+          type="number"
+          inputmode="decimal"
+          min="1000"
+          max="50000000"
+          step="1000"
+          value={emiDefaults.principal}
+          required
+          aria-describedby="emi-principal-hint"
+        />
+        <input
+          id="emi-principal-range"
+          type="range"
+          min="10000"
+          max="1000000"
+          step="5000"
+          value={emiDefaults.principal}
+          class="calc-range mt-3"
+          aria-label="Loan amount slider"
+        />
+        <p id="emi-principal-hint" class="field-hint">Principal borrowed (USD or any currency unit).</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="emi-rate">Interest rate (annual %)</label>
+          <span id="emi-rate-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{emiDefaults.rate}%</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="emi-rate"
+          name="rate"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="30"
+          step="0.05"
+          value={emiDefaults.rate}
+          required
+        />
+        <input
+          id="emi-rate-range"
+          type="range"
+          min="0"
+          max="18"
+          step="0.25"
+          value={emiDefaults.rate}
+          class="calc-range mt-3"
+          aria-label="Interest rate slider"
+        />
+        <p class="field-hint">Nominal annual rate from your lender.</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="emi-years">Loan tenure (years)</label>
+          <span id="emi-years-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{emiDefaults.years} years</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="emi-years"
+          name="years"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="40"
+          step="1"
+          value={emiDefaults.years}
+          required
+          aria-describedby="emi-tenure-hint"
+        />
+        <input
+          id="emi-years-range"
+          type="range"
+          min="1"
+          max="30"
+          step="1"
+          value={emiDefaults.years}
+          class="calc-range mt-3"
+          aria-label="Loan tenure slider"
+        />
+        <p id="emi-tenure-hint" class="field-hint">
+          {emiDefaults.years} years = {tenureMonths} monthly installments
+        </p>
+      </div>
+    </form>
+
+    <aside id="emi-results-panel" class="results-panel lg:sticky lg:top-24" hidden aria-live="polite">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <h3 class="text-title-4">Results</h3>
+        <button type="button" id="emi-share-btn" class="btn-ghost min-h-11 min-w-[44px] px-3 text-caption">
+          Copy share link
+        </button>
+      </div>
+
+      <div class="results-list mt-6 space-y-6">
+        <div>
+          <p class="results-label">Monthly EMI</p>
+          <p id="emi-monthly" class="results-value mt-1">—</p>
+        </div>
+        <div class="grid grid-cols-1 gap-4 min-[400px]:grid-cols-2">
+          <div>
+            <p class="results-label">Total interest</p>
+            <p id="emi-interest" class="text-title-4 mt-1" style="color: var(--text-secondary);">—</p>
+          </div>
+          <div>
+            <p class="results-label">Total payment</p>
+            <p id="emi-total" class="text-title-4 mt-1">—</p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="mt-6 flex flex-wrap gap-4 text-caption" aria-hidden="true">
+        <li class="flex items-center gap-2">
+          <span class="sip-legend-dot" style="background: var(--accent);"></span> Principal
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="sip-legend-dot" style="background: var(--warning, #ff9500);"></span> Interest
+        </li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section id="results" class="mt-10 scroll-mt-28" aria-labelledby="emi-chart-heading">
+  <div id="emi-chart-block" class="card" hidden>
+    <h2 id="emi-chart-heading" class="text-title-3">Principal vs interest by year</h2>
+    <p class="text-body-sm mt-2">How much of each year’s payments went to principal versus interest.</p>
+    <div class="calc-chart-wrap mt-6">
+      <canvas id="emi-chart" class="calc-chart" role="img" aria-label="Yearly principal and interest chart"></canvas>
+    </div>
+
+    <div class="mt-10">
+      <h3 class="text-title-4">EMI amortization schedule</h3>
+      <p class="text-body-sm mt-2">Month-by-month breakdown. Scroll on mobile to view all columns.</p>
+      <div class="calc-amort-scroll mt-4" tabindex="0" aria-label="Amortization table scroll region">
+        <table class="calc-table">
+          <caption class="sr-only">Monthly EMI amortization schedule</caption>
+          <thead>
+            <tr>
+              <th scope="col">Month</th>
+              <th scope="col">EMI</th>
+              <th scope="col">Principal</th>
+              <th scope="col">Interest</th>
+              <th scope="col">Balance</th>
+            </tr>
+          </thead>
+          <tbody id="emi-amort-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/emi-calculator.ts';
+
+  function syncDisplays(): void {
+    const principal = document.getElementById('emi-principal') as HTMLInputElement | null;
+    const rate = document.getElementById('emi-rate') as HTMLInputElement | null;
+    const years = document.getElementById('emi-years') as HTMLInputElement | null;
+    const principalD = document.getElementById('emi-principal-display');
+    const rateD = document.getElementById('emi-rate-display');
+    const yearsD = document.getElementById('emi-years-display');
+    const tenureHint = document.getElementById('emi-tenure-hint');
+    if (principal && principalD) principalD.textContent = Number(principal.value).toLocaleString();
+    if (rate && rateD) rateD.textContent = `${rate.value}%`;
+    if (years && yearsD) {
+      const y = Number(years.value);
+      yearsD.textContent = `${y} years`;
+      if (tenureHint) tenureHint.textContent = `${y} years = ${y * 12} monthly installments`;
+    }
+  }
+
+  document.getElementById('emi-form')?.addEventListener('input', syncDisplays);
+  syncDisplays();
+</script>

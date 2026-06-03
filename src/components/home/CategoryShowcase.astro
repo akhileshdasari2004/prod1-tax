@@ -1,0 +1,53 @@
+---
+import { categoryShowcase } from '../../config/homepage';
+import { calculatorsByCategory } from '../../config/calculators';
+
+const categoryTools = {
+  investing: calculatorsByCategory.investing,
+  loans: calculatorsByCategory.loans,
+  taxes: calculatorsByCategory.taxes,
+} as const;
+---
+
+<section class="mt-24 section-spacing pt-0" aria-labelledby="categories-heading">
+  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div class="prose-width">
+      <h2 id="categories-heading" class="text-title-2 text-balance">Calculator categories</h2>
+      <p class="text-body mt-3">
+        Browse tools by the financial decision you are working through — from building wealth to managing debt and taxes.
+      </p>
+    </div>
+    <a href="/calculators" class="btn-ghost shrink-0">View all tools</a>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-3">
+    {
+      categoryShowcase.map((category) => (
+        <article class="card card-muted flex flex-col">
+          <h3 class="text-title-3">
+            <a href={category.href} class="transition-opacity hover:opacity-70" style="color: inherit;">
+              {category.title}
+            </a>
+          </h3>
+          <p class="text-body-sm mt-4 flex-1">{category.description}</p>
+          <ul class="mt-6 space-y-2 border-t pt-6" style="border-color: var(--border-subtle);">
+            {categoryTools[category.id].map((tool) => (
+              <li>
+                <a
+                  href={tool.href}
+                  class="text-body-sm font-medium transition-opacity hover:opacity-70"
+                  style="color: var(--accent);"
+                >
+                  {tool.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href={category.href} class="link-arrow mt-6 inline-flex text-body-sm">
+            Explore {category.title.toLowerCase()}
+          </a>
+        </article>
+      ))
+    }
+  </div>
+</section>

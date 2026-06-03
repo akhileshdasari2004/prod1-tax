@@ -1,0 +1,166 @@
+/**
+ * FinanceToolsHub design tokens
+ * @see DESIGN.md
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Typography */
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --text-display-size: 3.5rem;
+  --text-display-leading: 1.05;
+  --text-display-tracking: -0.02em;
+
+  --text-title-1-size: 3rem;
+  --text-title-1-leading: 1.08;
+  --text-title-1-tracking: -0.02em;
+
+  --text-title-2-size: 2.5rem;
+  --text-title-2-leading: 1.1;
+  --text-title-2-tracking: -0.015em;
+
+  --text-title-3-size: 1.75rem;
+  --text-title-3-leading: 1.15;
+  --text-title-3-tracking: -0.01em;
+
+  --text-title-4-size: 1.5rem;
+  --text-title-4-leading: 1.2;
+
+  --text-body-lg-size: 1.3125rem;
+  --text-body-lg-leading: 1.5;
+
+  --text-body-size: 1.0625rem;
+  --text-body-leading: 1.55;
+
+  --text-body-sm-size: 0.875rem;
+  --text-body-sm-leading: 1.45;
+
+  --text-caption-size: 0.75rem;
+  --text-caption-leading: 1.35;
+
+  --width-reading: 42rem;
+  --width-content: 72rem;
+
+  /* Spacing (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  /* Light theme colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-tertiary: #fbfbfd;
+  --bg-elevated: #ffffff;
+
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-default: #d2d2d7;
+
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-muted: rgba(0, 113, 227, 0.12);
+
+  --cta: #1d1d1f;
+  --cta-text: #ffffff;
+  --cta-hover: #333336;
+
+  --success: #34c759;
+  --warning: #ff9500;
+  --error: #ff3b30;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.08);
+  --shadow-header: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
+
+  --header-bg: rgba(255, 255, 255, 0.72);
+  --header-bg-top: rgba(255, 255, 255, 0);
+  --header-blur: 20px;
+
+  --focus-ring: var(--accent);
+
+  --footer-glow: rgba(0, 113, 227, 0.1);
+  --footer-edge: rgba(0, 0, 0, 0.12);
+
+  /* Legacy aliases (components migrating) */
+  --surface: var(--bg-primary);
+  --surface-elevated: var(--bg-elevated);
+  --surface-muted: var(--bg-secondary);
+  --border: var(--border-default);
+  --text: var(--text-primary);
+  --text-muted: var(--text-secondary);
+  --text-subtle: var(--text-tertiary);
+}
+
+html.dark {
+  color-scheme: dark;
+
+  --bg-primary: #000000;
+  --bg-secondary: #1c1c1e;
+  --bg-tertiary: #2c2c2e;
+  --bg-elevated: #1c1c1e;
+
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #86868b;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: #424245;
+
+  --accent: #2997ff;
+  --accent-hover: #40a9ff;
+  --accent-muted: rgba(41, 151, 255, 0.18);
+
+  --cta: #f5f5f7;
+  --cta-text: #1d1d1f;
+  --cta-hover: #e8e8ed;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.55);
+  --shadow-header: 0 1px 0 rgba(255, 255, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  --header-bg: rgba(0, 0, 0, 0.72);
+  --header-bg-top: rgba(0, 0, 0, 0);
+
+  --footer-glow: rgba(41, 151, 255, 0.14);
+  --footer-edge: rgba(255, 255, 255, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+  }
+}

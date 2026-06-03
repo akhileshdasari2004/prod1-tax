@@ -1,0 +1,36 @@
+---
+import type { CalculatorMeta } from '../config/calculators';
+
+interface Props {
+  tools: CalculatorMeta[];
+  categoryHref: string;
+  categoryLabel: string;
+}
+
+const { tools, categoryHref, categoryLabel } = Astro.props;
+---
+
+<nav class="mt-12 card" aria-labelledby="category-tools-heading">
+  <h2 id="category-tools-heading" class="text-title-4">Tools in this category</h2>
+  <ul class="mt-6 space-y-4">
+    {
+      tools.map((tool) => (
+        <li>
+          <a href={tool.href} class="group block">
+            <span class="text-body font-medium transition-opacity group-hover:opacity-70" style="color: var(--accent);">
+              {tool.name}
+            </span>
+            <span class="text-body-sm mt-1 block">{tool.shortDescription}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="text-body-sm mt-8">
+    <a href="/calculators" class="link-arrow inline-flex">View all finance calculators</a>
+    {' · '}
+    <a href={categoryHref} class="transition-opacity hover:opacity-70" style="color: var(--text-secondary);">
+      {categoryLabel} hub
+    </a>
+  </p>
+</nav>

@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../config/site';
+import { staticPageSeo } from '../config/seo';
+import { contentPageJsonLd } from '../lib/schema';
+import { LEGAL_LAST_UPDATED } from '../content/company-pages';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.terms;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero title={title} description={description} />
+
+  <article class="prose-content mt-12 card">
+    <p><strong>Last updated:</strong> {LEGAL_LAST_UPDATED}</p>
+
+    <h2>Agreement</h2>
+    <p>
+      By accessing {SITE.url}, you agree to these Terms &amp; Conditions. If you disagree, discontinue use of the
+      site.
+    </p>
+
+    <h2>Educational purpose only</h2>
+    <p>
+      Calculators, guides, and FAQs are general information — not investment, tax, legal, or lending advice. You
+      are solely responsible for decisions made using these tools. Consult licensed professionals for your
+      situation.
+    </p>
+
+    <h2>Accuracy and limitations</h2>
+    <p>
+      We apply standard formulas and test for common scenarios, but we do not guarantee error-free results or
+      fitness for a particular purpose. Rates, fees, and tax rules change; verify outputs with official sources
+      before acting.
+    </p>
+
+    <h2>Acceptable use</h2>
+    <ul>
+      <li>Do not attempt to disrupt, scrape at abusive rates, or reverse-engineer the site.</li>
+      <li>Do not misrepresent our tools as endorsed financial products.</li>
+      <li>Do not upload malware or probe for vulnerabilities without written permission.</li>
+    </ul>
+
+    <h2>Intellectual property</h2>
+    <p>
+      Site design, copy, and code are owned by {SITE.name} unless otherwise noted. You may link to our pages
+      without prior permission. Republishing substantial portions requires written consent.
+    </p>
+
+    <h2>Third-party services</h2>
+    <p>
+      Analytics, advertising, and embedded resources may be provided by third parties subject to their own terms.
+      See our <a href="/privacy">Privacy Policy</a> for how those services may process data.
+    </p>
+
+    <h2>Disclaimer of warranties</h2>
+    <p>
+      The site is provided &quot;as is&quot; without warranties of any kind, express or implied, including
+      merchantability or non-infringement.
+    </p>
+
+    <h2>Limitation of liability</h2>
+    <p>
+      To the fullest extent permitted by law, {SITE.name} and its operators are not liable for direct, indirect,
+      incidental, or consequential damages arising from use of the site or reliance on calculator outputs.
+    </p>
+
+    <h2>Governing law</h2>
+    <p>
+      These terms are governed by the laws of the United States and the state in which the operator is established,
+      without regard to conflict-of-law rules.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions about these terms: <a href="/contact">contact us</a> or email{' '}
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+    </p>
+  </article>
+</BaseLayout>

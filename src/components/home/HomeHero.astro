@@ -1,0 +1,23 @@
+---
+import { homeHero } from '../../config/homepage';
+import HomeHeroHeadline from './HomeHeroHeadline';
+
+const { eyebrow, headline, subheadline, ctaLabel, ctaHref } = homeHero;
+---
+
+<section class="relative" aria-labelledby="home-hero-heading">
+  <div class="prose-width">
+    <HomeHeroHeadline client:visible eyebrow={eyebrow} headline={headline} />
+    <p class="text-body-lg mt-6 max-w-2xl text-balance animate-in animate-in-delay-1">
+      {subheadline}
+    </p>
+    <div class="mt-10 flex flex-wrap items-center gap-4">
+      <a href={ctaHref} class="btn-primary">
+        {ctaLabel}
+      </a>
+      <a href="/about" class="btn-ghost">
+        How we build tools
+      </a>
+    </div>
+  </div>
+</section>

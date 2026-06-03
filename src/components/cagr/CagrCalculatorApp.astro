@@ -1,0 +1,181 @@
+---
+import { cagrDefaults } from '../../content/cagr-calculator-page';
+---
+
+<section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="cagr-calc-heading">
+  <h2 id="cagr-calc-heading" class="sr-only">CAGR calculator</h2>
+
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:gap-10">
+    <form id="cagr-form" class="card space-y-8" novalidate>
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="cagr-begin">Beginning value</label>
+          <span id="cagr-begin-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{cagrDefaults.beginning.toLocaleString()}</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="cagr-begin"
+          name="begin"
+          type="number"
+          inputmode="decimal"
+          min="1"
+          max="100000000"
+          step="100"
+          value={cagrDefaults.beginning}
+          required
+          aria-describedby="cagr-begin-hint"
+        />
+        <input
+          id="cagr-begin-range"
+          type="range"
+          min="1000"
+          max="500000"
+          step="1000"
+          value={cagrDefaults.beginning}
+          class="calc-range mt-3"
+          aria-label="Beginning value slider"
+        />
+        <p id="cagr-begin-hint" class="field-hint">Starting portfolio or investment balance (USD or any currency unit).</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="cagr-end">Ending value</label>
+          <span id="cagr-end-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{cagrDefaults.ending.toLocaleString()}</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="cagr-end"
+          name="end"
+          type="number"
+          inputmode="decimal"
+          min="1"
+          max="100000000"
+          step="100"
+          value={cagrDefaults.ending}
+          required
+        />
+        <input
+          id="cagr-end-range"
+          type="range"
+          min="1000"
+          max="1000000"
+          step="1000"
+          value={cagrDefaults.ending}
+          class="calc-range mt-3"
+          aria-label="Ending value slider"
+        />
+        <p class="field-hint">Final balance at the end of the period.</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="cagr-years">Number of years</label>
+          <span id="cagr-years-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{cagrDefaults.years} years</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="cagr-years"
+          name="years"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="50"
+          step="1"
+          value={cagrDefaults.years}
+          required
+        />
+        <input
+          id="cagr-years-range"
+          type="range"
+          min="1"
+          max="40"
+          step="1"
+          value={cagrDefaults.years}
+          class="calc-range mt-3"
+          aria-label="Number of years slider"
+        />
+      </div>
+    </form>
+
+    <aside id="cagr-results-panel" class="results-panel lg:sticky lg:top-24" hidden aria-live="polite">
+      <div class="flex items-start justify-between gap-4">
+        <h3 class="text-title-4">Results</h3>
+        <button type="button" id="cagr-share-btn" class="btn-ghost min-h-9 px-3 text-caption">
+          Copy share link
+        </button>
+      </div>
+
+      <div class="results-list mt-6 space-y-6">
+        <div>
+          <p class="results-label">CAGR percentage</p>
+          <p id="cagr-percent" class="results-value mt-1">—</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="results-label">Absolute gain</p>
+            <p id="cagr-gain" class="text-title-4 mt-1">—</p>
+          </div>
+          <div>
+            <p class="results-label">Total return</p>
+            <p id="cagr-total-return" class="text-title-4 mt-1">—</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-caption mt-6">
+        CAGR is the smoothed annual rate linking your beginning and ending values over the selected period.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<section id="results" class="mt-10 scroll-mt-28" aria-labelledby="cagr-chart-heading">
+  <div id="cagr-chart-block" class="card" hidden>
+    <h2 id="cagr-chart-heading" class="text-title-3">Implied growth path</h2>
+    <p class="text-body-sm mt-2">
+      If your investment compounded at a constant CAGR each year, balances would follow this curve.
+    </p>
+    <div class="calc-chart-wrap mt-6">
+      <canvas id="cagr-chart" class="calc-chart" role="img" aria-label="CAGR growth curve by year"></canvas>
+    </div>
+    <div class="mt-8 overflow-x-auto">
+      <table class="calc-table">
+        <caption class="sr-only">Year-by-year value at constant CAGR</caption>
+        <thead>
+          <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Portfolio value</th>
+            <th scope="col">Gain vs start</th>
+          </tr>
+        </thead>
+        <tbody id="cagr-chart-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/cagr-calculator.ts';
+
+  function syncDisplays(): void {
+    const begin = document.getElementById('cagr-begin') as HTMLInputElement | null;
+    const end = document.getElementById('cagr-end') as HTMLInputElement | null;
+    const years = document.getElementById('cagr-years') as HTMLInputElement | null;
+    const beginD = document.getElementById('cagr-begin-display');
+    const endD = document.getElementById('cagr-end-display');
+    const yearsD = document.getElementById('cagr-years-display');
+    if (begin && beginD) beginD.textContent = Number(begin.value).toLocaleString();
+    if (end && endD) endD.textContent = Number(end.value).toLocaleString();
+    if (years && yearsD) yearsD.textContent = `${years.value} years`;
+  }
+
+  document.getElementById('cagr-form')?.addEventListener('input', syncDisplays);
+  syncDisplays();
+</script>

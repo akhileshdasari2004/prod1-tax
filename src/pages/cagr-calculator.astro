@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import CagrCalculatorApp from '../components/cagr/CagrCalculatorApp.astro';
+import CagrGuideSections from '../components/cagr/CagrGuideSections.astro';
+import { getRelatedCalculators } from '../config/calculators';
+import { cagrPageMeta, cagrFaqs } from '../content/cagr-calculator-page';
+import { calculatorPageJsonLd } from '../lib/schema';
+
+const pathname = '/cagr-calculator';
+const { title, description, keywords, lastUpdated } = cagrPageMeta;
+const related = getRelatedCalculators('cagr');
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Investing', href: '/investing' },
+  { label: 'CAGR Calculator' },
+];
+
+const jsonLd = calculatorPageJsonLd({
+  pathname,
+  title,
+  description,
+  keywords: [...keywords],
+  breadcrumbs,
+  faqs: cagrFaqs,
+});
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <article>
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="prose-width animate-in">
+      <p class="text-eyebrow">Investment growth · Annualized returns</p>
+      <h1 class="text-display mt-4 text-balance">CAGR Calculator</h1>
+      <p class="text-body-lg mt-5 text-balance">
+        {description}
+      </p>
+      <p class="text-caption mt-4">
+        Also known as: annual growth rate calculator, investment growth calculator, compound annual growth rate
+        calculator, CAGR formula calculator.
+      </p>
+      {
+        lastUpdated && (
+          <p class="text-caption mt-2">
+            Last updated: <time datetime={lastUpdated}>{lastUpdated}</time>
+          </p>
+        )
+      }
+    </header>
+
+    <CagrCalculatorApp />
+    <CagrGuideSections />
+    <FAQSection title="CAGR calculator FAQs" items={cagrFaqs} embedSchema={false} />
+    <RelatedCalculators calculators={related} />
+  </article>
+</BaseLayout>

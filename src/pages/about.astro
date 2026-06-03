@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PageHero from '../components/PageHero.astro';
+import AboutTimeline from '../components/about/AboutTimeline';
+import { staticPageSeo } from '../config/seo';
+import { contentPageJsonLd } from '../lib/schema';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.about;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero title={title} description={description} />
+
+  <AboutTimeline />
+
+  <section class="prose-content mx-auto mt-8 max-w-4xl px-4 sm:px-6">
+    <div class="card">
+      <h2 class="text-title-4">Quick links</h2>
+      <p class="text-body mt-3">
+        Browse the <a href="/calculators">full calculator directory</a>, or visit
+        <a href="/investing">investing</a>, <a href="/loans">loan</a>, and <a href="/taxes">tax</a> hubs.
+      </p>
+      <p class="text-body mt-4">
+        Questions? <a href="/contact">Contact us</a>. Read our <a href="/privacy">Privacy Policy</a> and
+        <a href="/terms">Terms &amp; Conditions</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,180 @@
+---
+import { lumpsumDefaults } from '../../content/lumpsum-calculator-page';
+---
+
+<section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="ls-calc-heading">
+  <h2 id="ls-calc-heading" class="sr-only">Lumpsum calculator</h2>
+
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:gap-10">
+    <form id="lumpsum-form" class="card space-y-8" novalidate>
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="ls-principal">Initial investment</label>
+          <span id="ls-principal-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{lumpsumDefaults.principal.toLocaleString()}</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="ls-principal"
+          name="principal"
+          type="number"
+          inputmode="decimal"
+          min="1"
+          max="100000000"
+          step="500"
+          value={lumpsumDefaults.principal}
+          required
+          aria-describedby="ls-principal-hint"
+        />
+        <input
+          id="ls-principal-range"
+          type="range"
+          min="5000"
+          max="500000"
+          step="5000"
+          value={lumpsumDefaults.principal}
+          class="calc-range mt-3"
+          aria-label="Initial investment slider"
+        />
+        <p id="ls-principal-hint" class="field-hint">One-time amount invested upfront (USD or any currency unit).</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="ls-rate">Return rate (annual %)</label>
+          <span id="ls-rate-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{lumpsumDefaults.rate}%</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="ls-rate"
+          name="rate"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="30"
+          step="0.1"
+          value={lumpsumDefaults.rate}
+          required
+        />
+        <input
+          id="ls-rate-range"
+          type="range"
+          min="0"
+          max="25"
+          step="0.5"
+          value={lumpsumDefaults.rate}
+          class="calc-range mt-3"
+          aria-label="Return rate slider"
+        />
+        <p class="field-hint">Assumed yearly return before taxes and fees.</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="ls-years">Duration (years)</label>
+          <span id="ls-years-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{lumpsumDefaults.years} years</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="ls-years"
+          name="years"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="50"
+          step="1"
+          value={lumpsumDefaults.years}
+          required
+        />
+        <input
+          id="ls-years-range"
+          type="range"
+          min="1"
+          max="40"
+          step="1"
+          value={lumpsumDefaults.years}
+          class="calc-range mt-3"
+          aria-label="Duration slider"
+        />
+      </div>
+    </form>
+
+    <aside id="ls-results-panel" class="results-panel lg:sticky lg:top-24" hidden aria-live="polite">
+      <div class="flex items-start justify-between gap-4">
+        <h3 class="text-title-4">Results</h3>
+        <button type="button" id="ls-share-btn" class="btn-ghost min-h-9 px-3 text-caption">
+          Copy share link
+        </button>
+      </div>
+
+      <div class="results-list mt-6 space-y-6">
+        <div>
+          <p class="results-label">Future value</p>
+          <p id="ls-fv" class="results-value mt-1">—</p>
+        </div>
+        <div>
+          <p class="results-label">Profit earned</p>
+          <p id="ls-profit" class="text-title-4 mt-1" style="color: var(--success);">—</p>
+        </div>
+      </div>
+
+      <ul class="mt-6 flex flex-wrap gap-4 text-caption" aria-hidden="true">
+        <li class="flex items-center gap-2">
+          <span class="sip-legend-dot" style="background: var(--accent);"></span> Initial investment
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="sip-legend-dot" style="background: var(--success);"></span> Profit earned
+        </li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section id="results" class="mt-10 scroll-mt-28" aria-labelledby="ls-chart-heading">
+  <div id="ls-chart-block" class="card" hidden>
+    <h2 id="ls-chart-heading" class="text-title-3">Growth over time</h2>
+    <p class="text-body-sm mt-2">
+      Stacked view of your initial investment versus cumulative profit earned each year.
+    </p>
+    <div class="calc-chart-wrap mt-6">
+      <canvas id="ls-chart" class="calc-chart" role="img" aria-label="Lumpsum growth chart by year"></canvas>
+    </div>
+    <div class="mt-8 overflow-x-auto">
+      <table class="calc-table">
+        <caption class="sr-only">Year-by-year lumpsum projection</caption>
+        <thead>
+          <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Future value</th>
+            <th scope="col">Profit earned</th>
+          </tr>
+        </thead>
+        <tbody id="ls-chart-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/lumpsum-calculator.ts';
+
+  function syncDisplays(): void {
+    const principal = document.getElementById('ls-principal') as HTMLInputElement | null;
+    const rate = document.getElementById('ls-rate') as HTMLInputElement | null;
+    const years = document.getElementById('ls-years') as HTMLInputElement | null;
+    const principalD = document.getElementById('ls-principal-display');
+    const rateD = document.getElementById('ls-rate-display');
+    const yearsD = document.getElementById('ls-years-display');
+    if (principal && principalD) principalD.textContent = Number(principal.value).toLocaleString();
+    if (rate && rateD) rateD.textContent = `${rate.value}%`;
+    if (years && yearsD) yearsD.textContent = `${years.value} years`;
+  }
+
+  document.getElementById('lumpsum-form')?.addEventListener('input', syncDisplays);
+  syncDisplays();
+</script>

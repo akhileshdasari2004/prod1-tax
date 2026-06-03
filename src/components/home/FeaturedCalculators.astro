@@ -1,0 +1,24 @@
+---
+import CalculatorCard from '../CalculatorCard.astro';
+import { calculators } from '../../config/calculators';
+
+const featuredIds = ['sip', 'cagr', 'lumpsum', 'emi', 'gst'] as const;
+const featured = calculators.filter((c) => featuredIds.includes(c.id as (typeof featuredIds)[number]));
+---
+
+<section class="mt-24" aria-labelledby="featured-heading">
+  <div class="prose-width">
+    <h2 id="featured-heading" class="text-title-2 text-balance">Featured calculators</h2>
+    <p class="text-body mt-3">
+      Start with our most-used tools for investing, borrowing, and tax math. Each calculator includes plain-language guidance and FAQs.
+    </p>
+  </div>
+
+  <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {featured.map((calc) => (
+      <li>
+        <CalculatorCard calculator={calc} />
+      </li>
+    ))}
+  </ul>
+</section>

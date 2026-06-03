@@ -1,0 +1,151 @@
+---
+import { gstDefaults, gstRatePresets } from '../../content/gst-calculator-page';
+---
+
+<section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="gst-calc-heading">
+  <h2 id="gst-calc-heading" class="sr-only">GST calculator</h2>
+
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:gap-10">
+    <form id="gst-form" class="card space-y-8" novalidate>
+      <fieldset class="border-0 p-0 m-0">
+        <legend class="label-field">Calculation mode</legend>
+        <div class="gst-segment mt-3" role="radiogroup" aria-label="GST calculation mode">
+          <label>
+            <input type="radio" name="mode" value="add" checked={gstDefaults.mode === 'add'} />
+            Add GST
+          </label>
+          <label>
+            <input type="radio" name="mode" value="remove" checked={gstDefaults.mode === 'remove'} />
+            Remove GST
+          </label>
+        </div>
+        <p id="gst-mode-hint" class="field-hint mt-3">
+          Add GST: amount is exclusive (before tax). Remove GST: amount is inclusive (tax included).
+        </p>
+      </fieldset>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="gst-amount" id="gst-amount-label">Amount</label>
+          <span id="gst-amount-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{gstDefaults.amount.toLocaleString()}</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="gst-amount"
+          name="amount"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="1000000000"
+          step="1"
+          value={gstDefaults.amount}
+          required
+          aria-describedby="gst-mode-hint"
+        />
+        <input
+          id="gst-amount-range"
+          type="range"
+          min="100"
+          max="500000"
+          step="100"
+          value={gstDefaults.amount}
+          class="calc-range mt-3"
+          aria-label="Amount slider"
+        />
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="gst-rate">GST rate (%)</label>
+          <span id="gst-rate-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{gstDefaults.rate}%</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="gst-rate"
+          name="rate"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="100"
+          step="0.01"
+          value={gstDefaults.rate}
+          required
+        />
+        <div class="gst-rate-chips" role="group" aria-label="Common GST rate presets">
+          {
+            gstRatePresets.map((preset) => (
+              <button
+                type="button"
+                class="gst-rate-chip"
+                data-rate={preset}
+                aria-pressed={preset === gstDefaults.rate}
+              >
+                {preset}%
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </form>
+
+    <aside id="gst-results-panel" class="results-panel lg:sticky lg:top-24" hidden aria-live="polite">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <h3 class="text-title-4">Results</h3>
+        <button type="button" id="gst-share-btn" class="btn-ghost min-h-11 min-w-[44px] px-3 text-caption">
+          Copy share link
+        </button>
+      </div>
+
+      <div class="results-list mt-6 space-y-6">
+        <div>
+          <p class="results-label">GST amount</p>
+          <p id="gst-tax" class="text-title-4 mt-1" style="color: var(--warning);">—</p>
+        </div>
+        <div>
+          <p class="results-label" id="gst-final-label">Final amount</p>
+          <p id="gst-final" class="results-value mt-1" aria-labelledby="gst-final-label">—</p>
+        </div>
+        <div>
+          <p class="text-caption" id="gst-base-label">Base amount</p>
+          <p id="gst-base" class="text-body-sm font-medium mt-1" aria-labelledby="gst-base-label">—</p>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <p class="text-caption mb-2">Tax composition</p>
+        <div class="gst-breakdown-bar" aria-hidden="true">
+          <div id="gst-bar-base" class="gst-breakdown-base" style="width: 0%;"></div>
+          <div id="gst-bar-tax" class="gst-breakdown-tax" style="width: 0%;"></div>
+        </div>
+        <ul class="mt-4 flex flex-wrap gap-4 text-caption" aria-hidden="true">
+          <li class="flex items-center gap-2">
+            <span class="sip-legend-dot" style="background: var(--accent);"></span> Base
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="sip-legend-dot" style="background: var(--warning);"></span> GST
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/gst-calculator.ts';
+
+  function syncDisplays(): void {
+    const amount = document.getElementById('gst-amount') as HTMLInputElement | null;
+    const rate = document.getElementById('gst-rate') as HTMLInputElement | null;
+    const amountD = document.getElementById('gst-amount-display');
+    const rateD = document.getElementById('gst-rate-display');
+    if (amount && amountD) amountD.textContent = Number(amount.value).toLocaleString();
+    if (rate && rateD) rateD.textContent = `${rate.value}%`;
+  }
+
+  document.getElementById('gst-form')?.addEventListener('input', syncDisplays);
+  syncDisplays();
+</script>

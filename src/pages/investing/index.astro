@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PageHero from '../../components/PageHero.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import CategoryHubLinks from '../../components/CategoryHubLinks.astro';
+import { calculatorsByCategory } from '../../config/calculators';
+import { staticPageSeo } from '../../config/seo';
+import { contentPageJsonLd } from '../../lib/schema';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.investing;
+const tools = calculatorsByCategory.investing;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero eyebrow="Investing" title={title} description={description} />
+
+  <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {tools.map((calc) => (
+      <li>
+        <CalculatorCard calculator={calc} />
+      </li>
+    ))}
+  </ul>
+
+  <section class="prose-content mt-12 card">
+    <h2>How to use these investing calculators</h2>
+    <p>
+      Model recurring contributions with the <a href="/sip-calculator">SIP calculator</a>, one-time deposits with
+      the <a href="/lumpsum-calculator">lumpsum investment calculator</a>, and annualized performance between two
+      balances with the <a href="/cagr-calculator">CAGR calculator</a>. Each tool updates instantly in your browser.
+    </p>
+    <p>
+      For borrowing or tax splits, visit <a href="/loans">loan calculators</a> or the
+      <a href="/taxes">GST calculator hub</a>.
+    </p>
+  </section>
+
+  <CategoryHubLinks tools={tools} categoryHref="/investing" categoryLabel="Investing" />
+</BaseLayout>

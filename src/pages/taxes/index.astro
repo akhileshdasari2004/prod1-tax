@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PageHero from '../../components/PageHero.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import CategoryHubLinks from '../../components/CategoryHubLinks.astro';
+import { calculatorsByCategory } from '../../config/calculators';
+import { staticPageSeo } from '../../config/seo';
+import { contentPageJsonLd } from '../../lib/schema';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.taxes;
+const tools = calculatorsByCategory.taxes;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero eyebrow="Taxes" title={title} description={description} />
+
+  <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {tools.map((calc) => (
+      <li>
+        <CalculatorCard calculator={calc} />
+      </li>
+    ))}
+  </ul>
+
+  <section class="prose-content mt-12 card">
+    <h2>GST inclusive and exclusive pricing</h2>
+    <p>
+      The <a href="/gst-calculator">GST calculator</a> adds tax to an exclusive quote or removes tax from an inclusive
+      price. Choose 5%, 12%, 18%, or 28% presets — or enter a custom rate for invoices and proposals.
+    </p>
+    <p>
+      Explore <a href="/investing">investment calculators</a> and <a href="/loans">loan EMI tools</a> for the rest of
+      your financial planning stack.
+    </p>
+  </section>
+
+  <CategoryHubLinks tools={tools} categoryHref="/taxes" categoryLabel="Taxes" />
+</BaseLayout>

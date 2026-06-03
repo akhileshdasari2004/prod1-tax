@@ -1,0 +1,15 @@
+---
+interface Props {
+  id: string;
+  title?: string;
+}
+
+const { id, title = 'Results' } = Astro.props;
+---
+
+<div slot="results" id={id} class="results-panel" hidden aria-live="polite">
+  <h2 class="text-title-4">{title}</h2>
+  <div class="results-list mt-6 space-y-6">
+    <slot />
+  </div>
+</div>

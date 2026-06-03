@@ -1,0 +1,30 @@
+---
+import { isAnalyticsEnabled, ENV } from '../config/env';
+
+const enabled = isAnalyticsEnabled();
+const measurementId = ENV.gaMeasurementId;
+---
+
+{
+  enabled && (
+    <>
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+      />
+      <script is:inline define:vars={{ measurementId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', measurementId, {
+          anonymize_ip: true,
+          allow_google_signals: false,
+          allow_ad_personalization_signals: false,
+        });
+      </script>
+    </>
+  )
+}

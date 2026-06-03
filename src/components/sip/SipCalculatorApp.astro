@@ -1,0 +1,185 @@
+---
+import { sipDefaults } from '../../content/sip-calculator-page';
+---
+
+<section id="calculator" class="mt-12 scroll-mt-28" aria-labelledby="sip-calc-heading">
+  <h2 id="sip-calc-heading" class="sr-only">SIP calculator</h2>
+
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:gap-10">
+    <form id="sip-form" class="card space-y-8" novalidate>
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="sip-amount">Monthly investment</label>
+          <span id="sip-amount-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{sipDefaults.monthly.toLocaleString()}</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="sip-amount"
+          name="amount"
+          type="number"
+          inputmode="decimal"
+          min="1"
+          max="10000000"
+          step="50"
+          value={sipDefaults.monthly}
+          required
+          aria-describedby="sip-amount-hint"
+        />
+        <input
+          id="sip-amount-range"
+          type="range"
+          min="100"
+          max="100000"
+          step="100"
+          value={sipDefaults.monthly}
+          class="sip-range mt-3"
+          aria-label="Monthly investment slider"
+        />
+        <p id="sip-amount-hint" class="field-hint">Fixed amount you invest each month (USD). Works with any currency unit in the formula.</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="sip-rate">Expected return (annual %)</label>
+          <span id="sip-rate-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{sipDefaults.rate}%</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="sip-rate"
+          name="rate"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="30"
+          step="0.1"
+          value={sipDefaults.rate}
+          required
+        />
+        <input
+          id="sip-rate-range"
+          type="range"
+          min="0"
+          max="25"
+          step="0.5"
+          value={sipDefaults.rate}
+          class="sip-range mt-3"
+          aria-label="Expected return slider"
+        />
+        <p class="field-hint">Assumed yearly return before taxes and fees.</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-4">
+          <label class="label-field mb-0" for="sip-years">Investment duration (years)</label>
+          <span id="sip-years-display" class="text-body-sm font-medium" style="color: var(--text-primary);"
+            >{sipDefaults.years} years</span
+          >
+        </div>
+        <input
+          class="input-field mt-3"
+          id="sip-years"
+          name="years"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="50"
+          step="1"
+          value={sipDefaults.years}
+          required
+        />
+        <input
+          id="sip-years-range"
+          type="range"
+          min="1"
+          max="40"
+          step="1"
+          value={sipDefaults.years}
+          class="sip-range mt-3"
+          aria-label="Investment duration slider"
+        />
+      </div>
+    </form>
+
+    <aside id="sip-results-panel" class="results-panel lg:sticky lg:top-24" hidden aria-live="polite">
+      <div class="flex items-start justify-between gap-4">
+        <h3 class="text-title-4">Results</h3>
+        <button type="button" id="sip-share-btn" class="btn-ghost min-h-9 px-3 text-caption">
+          Copy share link
+        </button>
+      </div>
+
+      <div class="results-list mt-6 space-y-6">
+        <div>
+          <p class="results-label">Maturity value</p>
+          <p id="sip-fv" class="results-value mt-1">—</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="results-label">Invested amount</p>
+            <p id="sip-invested" class="text-title-4 mt-1">—</p>
+          </div>
+          <div>
+            <p class="results-label">Wealth gained</p>
+            <p id="sip-gain" class="text-title-4 mt-1" style="color: var(--success);">—</p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="mt-6 flex flex-wrap gap-4 text-caption" aria-hidden="true">
+        <li class="flex items-center gap-2">
+          <span class="sip-legend-dot" style="background: var(--accent);"></span> Invested
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="sip-legend-dot" style="background: var(--success);"></span> Wealth gained
+        </li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section id="results" class="mt-10 scroll-mt-28" aria-labelledby="sip-chart-heading">
+  <div id="sip-chart-block" class="card" hidden>
+    <h2 id="sip-chart-heading" class="text-title-3">Growth over time</h2>
+    <p class="text-body-sm mt-2">Stacked view of cumulative contributions vs compounded wealth gained each year.</p>
+    <div class="sip-chart-wrap mt-6">
+      <canvas id="sip-chart" class="sip-chart" role="img" aria-label="SIP growth chart by year"></canvas>
+    </div>
+    <div class="mt-8 overflow-x-auto">
+      <table class="sip-table">
+        <caption class="sr-only">Year-by-year SIP projection</caption>
+        <thead>
+          <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Invested</th>
+            <th scope="col">Wealth gained</th>
+            <th scope="col">Maturity value</th>
+          </tr>
+        </thead>
+        <tbody id="sip-chart-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/sip-calculator.ts';
+
+  function syncDisplays(): void {
+    const amount = document.getElementById('sip-amount') as HTMLInputElement | null;
+    const rate = document.getElementById('sip-rate') as HTMLInputElement | null;
+    const years = document.getElementById('sip-years') as HTMLInputElement | null;
+    const amountD = document.getElementById('sip-amount-display');
+    const rateD = document.getElementById('sip-rate-display');
+    const yearsD = document.getElementById('sip-years-display');
+    if (amount && amountD) amountD.textContent = Number(amount.value).toLocaleString();
+    if (rate && rateD) rateD.textContent = `${rate.value}%`;
+    if (years && yearsD) yearsD.textContent = `${years.value} years`;
+  }
+
+  document.getElementById('sip-form')?.addEventListener('input', syncDisplays);
+  syncDisplays();
+</script>

@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../config/site';
+import { staticPageSeo } from '../config/seo';
+import { contentPageJsonLd } from '../lib/schema';
+import { LEGAL_LAST_UPDATED } from '../content/company-pages';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.privacy;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero title={title} description={description} />
+
+  <article class="prose-content mt-12 card">
+    <p><strong>Last updated:</strong> {LEGAL_LAST_UPDATED}</p>
+
+    <h2>Overview</h2>
+    <p>
+      {SITE.name} ({SITE.url}) is a static website operated for educational finance calculators. This policy
+      explains what we collect, what we do not collect, and how third-party services may process limited
+      technical data.
+    </p>
+
+    <h2>Calculator data stays on your device</h2>
+    <p>
+      Inputs and results from our calculators are processed in your browser. We do not operate an application
+      server that receives or stores your loan amounts, investment assumptions, or tax figures.
+    </p>
+    <ul>
+      <li>No accounts or profiles</li>
+      <li>No payment processing on this site</li>
+      <li>No sale of personal financial data</li>
+    </ul>
+
+    <h2>Information we may collect automatically</h2>
+    <p>When analytics or advertising is enabled, third parties may receive:</p>
+    <ul>
+      <li>Page URL, referrer, and approximate geography (from IP)</li>
+      <li>Device type, browser, and screen size</li>
+      <li>Aggregated usage events (page views, scroll depth if configured)</li>
+      <li>Cookie or similar identifiers used for measurement</li>
+    </ul>
+    <p>
+      We use <strong>Google Analytics 4</strong> on the production domain only when a measurement ID is
+      configured. Preview deployments on <code>*.pages.dev</code> are excluded from indexing and should not
+      load analytics. IP anonymization is enabled where supported.
+    </p>
+
+    <h2>Cookies and local storage</h2>
+    <ul>
+      <li>
+        <strong>Theme preference</strong> — stored in <code>localStorage</code> to remember light/dark mode.
+      </li>
+      <li>
+        <strong>Analytics cookies</strong> — set by Google when Analytics is active; see
+        <a href="https://policies.google.com/privacy" rel="noopener noreferrer">Google&apos;s Privacy Policy</a>.
+      </li>
+      <li>
+        <strong>Advertising cookies</strong> — if we display Google AdSense or similar ads in the future, ad
+        partners may use cookies for delivery and measurement. We will update this policy before enabling ads.
+      </li>
+    </ul>
+
+    <h2>Advertising</h2>
+    <p>
+      We may monetize the site with display advertising (e.g. Google AdSense). Ad partners are responsible for
+      their own cookies and compliance programs. You can manage ad personalization in
+      <a href="https://adssettings.google.com" rel="noopener noreferrer">Google Ads Settings</a>.
+    </p>
+
+    <h2>Children&apos;s privacy</h2>
+    <p>
+      This site is not directed at children under 13. We do not knowingly collect personal information from
+      children.
+    </p>
+
+    <h2>Your choices</h2>
+    <ul>
+      <li>Use browser settings to block or delete cookies.</li>
+      <li>Install analytics opt-out extensions supported by your browser vendor.</li>
+      <li>Contact us to request clarification about data practices.</li>
+    </ul>
+
+    <h2>Third-party links</h2>
+    <p>External sites linked from our content have their own privacy policies.</p>
+
+    <h2>Changes</h2>
+    <p>We may update this policy; the &quot;Last updated&quot; date at the top will change when we do.</p>
+
+    <h2>Contact</h2>
+    <p>
+      Privacy questions: <a href="/contact">Contact FinanceToolsHub</a> or email{' '}
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+    </p>
+  </article>
+</BaseLayout>

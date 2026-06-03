@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PageHero from '../../components/PageHero.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { calculators } from '../../config/calculators';
+import { staticPageSeo } from '../../config/seo';
+import { contentPageJsonLd } from '../../lib/schema';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.calculators;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero eyebrow="Tools" title={title} description={description} />
+
+  <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {calculators.map((calc) => (
+      <li>
+        <CalculatorCard calculator={calc} />
+      </li>
+    ))}
+  </ul>
+
+  <nav class="prose-content mt-12 card" aria-label="Calculator categories">
+    <h2 class="text-title-4">Browse by category</h2>
+    <ul class="mt-4 space-y-2 text-body">
+      <li>
+        <a href="/investing" class="font-medium" style="color: var(--accent);">Investing calculators</a>
+        — SIP, lumpsum, and CAGR tools
+      </li>
+      <li>
+        <a href="/loans" class="font-medium" style="color: var(--accent);">Loan EMI calculators</a>
+        — mortgage and personal loan payments
+      </li>
+      <li>
+        <a href="/taxes" class="font-medium" style="color: var(--accent);">GST & tax calculators</a>
+        — add or remove GST from amounts
+      </li>
+    </ul>
+  </nav>
+</BaseLayout>

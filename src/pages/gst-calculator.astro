@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import GstCalculatorApp from '../components/gst/GstCalculatorApp.astro';
+import GstGuideSections from '../components/gst/GstGuideSections.astro';
+import { getRelatedCalculators } from '../config/calculators';
+import { gstPageMeta, gstFaqs } from '../content/gst-calculator-page';
+import { calculatorPageJsonLd } from '../lib/schema';
+
+const pathname = '/gst-calculator';
+const { title, description, keywords, lastUpdated } = gstPageMeta;
+const related = getRelatedCalculators('gst');
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Taxes', href: '/taxes' },
+  { label: 'GST Calculator' },
+];
+
+const jsonLd = calculatorPageJsonLd({
+  pathname,
+  title,
+  description,
+  keywords: [...keywords],
+  breadcrumbs,
+  faqs: gstFaqs,
+});
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <article>
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="prose-width animate-in">
+      <p class="text-eyebrow">Tax · Inclusive & exclusive pricing</p>
+      <h1 class="text-display mt-4 text-balance">GST Calculator</h1>
+      <p class="text-body-lg mt-5 text-balance">
+        {description}
+      </p>
+      <p class="text-caption mt-4">
+        Also known as: tax calculator for GST, GST inclusive calculator, add GST calculator, reverse GST calculator.
+      </p>
+      {
+        lastUpdated && (
+          <p class="text-caption mt-2">
+            Last updated: <time datetime={lastUpdated}>{lastUpdated}</time>
+          </p>
+        )
+      }
+    </header>
+
+    <GstCalculatorApp />
+    <GstGuideSections />
+    <FAQSection title="GST calculator FAQs" items={gstFaqs} embedSchema={false} />
+    <RelatedCalculators calculators={related} />
+  </article>
+</BaseLayout>

@@ -1,0 +1,87 @@
+---
+import { homeSeoArticle } from '../../content/home-seo-article';
+
+const toolLinks = [
+  { href: '/sip-calculator', label: 'SIP calculator' },
+  { href: '/lumpsum-calculator', label: 'Lumpsum calculator' },
+  { href: '/cagr-calculator', label: 'CAGR calculator' },
+  { href: '/emi-calculator', label: 'Loan EMI calculator' },
+  { href: '/gst-calculator', label: 'GST calculator' },
+] as const;
+
+type ToolLink = (typeof toolLinks)[number];
+
+const sectionToolLinks: Record<string, ToolLink[]> = {
+  'investment-calculators': toolLinks.slice(0, 3) as ToolLink[],
+  'loan-calculators': [toolLinks[3]],
+  'tax-calculators': [toolLinks[4]],
+};
+---
+
+<section class="mt-24" aria-labelledby="seo-article-heading">
+  <article class="mx-auto max-w-3xl">
+    <header class="mb-10">
+      <p class="text-eyebrow">Guide</p>
+      <h2 id="seo-article-heading" class="text-title-2 mt-3 text-balance">
+        {homeSeoArticle.title}
+      </h2>
+      <p class="text-body-lg mt-5">{homeSeoArticle.intro}</p>
+    </header>
+
+    <nav class="card mb-10" aria-label="Featured finance calculators">
+      <h3 class="text-title-4">Free calculators on this site</h3>
+      <ul class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-body-sm">
+        {
+          toolLinks.map((link) => (
+            <li>
+              <a href={link.href} class="font-medium underline" style="color: var(--accent);">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="text-caption mt-4">
+        <a href="/calculators">Browse all calculators</a>
+        {' · '}
+        <a href="/investing">Investing</a>
+        {' · '}
+        <a href="/loans">Loans</a>
+        {' · '}
+        <a href="/taxes">Taxes</a>
+      </p>
+    </nav>
+
+    {
+      homeSeoArticle.sections.map((section) => (
+        <section id={section.id} class="mt-12 scroll-mt-24">
+          <h3 class="text-title-3 text-balance">{section.heading}</h3>
+          {section.paragraphs.map((paragraph) => (
+            <p class="text-body mt-4">{paragraph}</p>
+          ))}
+          {sectionToolLinks[section.id] && (
+            <p class="text-body-sm mt-4">
+              <span class="font-medium" style="color: var(--text-primary);">Related tools: </span>
+              {sectionToolLinks[section.id].map((link, i, arr) => (
+                <>
+                  <a href={link.href} class="underline" style="color: var(--accent);">
+                    {link.label}
+                  </a>
+                  {i < arr.length - 1 ? ', ' : ''}
+                </>
+              ))}
+            </p>
+          )}
+        </section>
+      ))
+    }
+
+    <footer class="mt-12 border-t pt-8" style="border-color: var(--border-subtle);">
+      <p class="text-caption">{homeSeoArticle.authorNote}</p>
+      <p class="text-body-sm mt-4">
+        Questions or corrections? <a href="/contact">Contact our team</a>. For personalized advice, consult a
+        licensed financial adviser, attorney, or tax professional in your state.
+      </p>
+    </footer>
+  </article>
+</section>

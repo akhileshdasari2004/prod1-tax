@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../config/site';
+import { staticPageSeo } from '../config/seo';
+import { contentPageJsonLd } from '../lib/schema';
+import { contactPage } from '../content/company-pages';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.contact;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero title={title} description={description} />
+
+  <p class="text-body-lg mt-8 max-w-2xl">{contactPage.intro}</p>
+
+  <div class="mt-12 grid gap-6 lg:grid-cols-2">
+    <section class="card lg:col-span-2">
+      <h2 class="text-title-4">Email</h2>
+      <p class="text-body-sm mt-3">Primary channel for all inquiries:</p>
+      <p class="mt-4">
+        <a href={`mailto:${SITE.email}`} class="text-body font-semibold" style="color: var(--accent);">
+          {SITE.email}
+        </a>
+      </p>
+      <p class="text-caption mt-4">{contactPage.responseTime}</p>
+    </section>
+
+    {
+      contactPage.topics.map((topic) => (
+        <section class="card">
+          <h2 class="text-title-4">{topic.title}</h2>
+          <p class="text-body-sm mt-3">{topic.body}</p>
+        </section>
+      ))
+    }
+  </div>
+
+  <section class="prose-content mt-12 card">
+    <h2>Helpful links</h2>
+    <ul class="mt-4 list-disc space-y-2 pl-5">
+      <li><a href="/sip-calculator">SIP calculator</a></li>
+      <li><a href="/emi-calculator">Loan EMI calculator</a></li>
+      <li><a href="/gst-calculator">GST calculator</a></li>
+      <li><a href="/privacy">Privacy Policy</a></li>
+      <li><a href="/terms">Terms &amp; Conditions</a></li>
+    </ul>
+  </section>
+</BaseLayout>

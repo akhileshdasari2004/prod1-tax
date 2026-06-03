@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PageHero from '../../components/PageHero.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import CategoryHubLinks from '../../components/CategoryHubLinks.astro';
+import { calculatorsByCategory } from '../../config/calculators';
+import { staticPageSeo } from '../../config/seo';
+import { contentPageJsonLd } from '../../lib/schema';
+
+const { pathname, title, description, breadcrumbs } = staticPageSeo.loans;
+const tools = calculatorsByCategory.loans;
+const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <PageHero eyebrow="Loans" title={title} description={description} />
+
+  <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {tools.map((calc) => (
+      <li>
+        <CalculatorCard calculator={calc} />
+      </li>
+    ))}
+  </ul>
+
+  <section class="prose-content mt-12 card">
+    <h2>Plan loan payments before you borrow</h2>
+    <p>
+      Use the <a href="/emi-calculator">EMI calculator</a> for home mortgages, auto loans, and personal loans. See
+      monthly EMI, total interest, total payment, and a full amortization schedule. Compare tenures and rates before
+      you talk to a lender.
+    </p>
+    <p>
+      Pair results with <a href="/investing">investing calculators</a> when weighing extra principal payments versus
+      investing the same cash flow.
+    </p>
+  </section>
+
+  <CategoryHubLinks tools={tools} categoryHref="/loans" categoryLabel="Loans" />
+</BaseLayout>

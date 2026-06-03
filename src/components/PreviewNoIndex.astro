@@ -1,0 +1,21 @@
+---
+/** Runtime noindex for *.pages.dev preview URLs (same build as production). */
+---
+
+<script is:inline>
+  (function () {
+    var host = location.hostname;
+    if (host === 'pages.dev' || host.slice(-10) === '.pages.dev') {
+      var robots = document.querySelector('meta[name="robots"]');
+      if (robots) {
+        robots.setAttribute('content', 'noindex, nofollow');
+      } else {
+        var meta = document.createElement('meta');
+        meta.name = 'robots';
+        meta.content = 'noindex, nofollow';
+        document.head.appendChild(meta);
+      }
+      document.documentElement.setAttribute('data-preview-host', 'true');
+    }
+  })();
+</script>

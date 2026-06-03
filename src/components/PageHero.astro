@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+  large?: boolean;
+}
+
+const { title, description, eyebrow, large = true } = Astro.props;
+---
+
+<header class="prose-width animate-in">
+  {eyebrow && <p class="text-eyebrow">{eyebrow}</p>}
+  <h1 class:list={['text-balance', large ? 'text-display mt-3' : 'text-title-1 mt-2']}>
+    {title}
+  </h1>
+  <p class="text-body-lg mt-5 text-balance">{description}</p>
+</header>

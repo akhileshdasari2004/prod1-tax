@@ -1,0 +1,59 @@
+---
+export type FAQItem = {
+  question: string;
+  answer: string;
+};
+
+interface Props {
+  title?: string;
+  items: FAQItem[];
+  /** When false, FAQ JSON-LD is omitted here (emit once in page head via calculatorPageJsonLd). */
+  embedSchema?: boolean;
+}
+
+const { title = 'Frequently asked questions', items, embedSchema = true } = Astro.props;
+
+const faqJsonLd = embedSchema
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    }
+  : null;
+---
+
+<section class="mt-16 section-spacing pt-0" aria-labelledby="faq-heading">
+  <h2 id="faq-heading" class="text-title-2 text-balance">{title}</h2>
+  <div class="mt-8 space-y-3">
+    {
+      items.map((item) => (
+        <details class="faq-item group">
+          <summary>
+            <span class="flex items-center justify-between gap-6">
+              <span class="text-body font-medium" style="color: var(--text-primary);">
+                {item.question}
+              </span>
+              <span
+                class="shrink-0 text-body-sm transition-transform duration-[var(--duration-normal)] group-open:rotate-180"
+                style="color: var(--text-tertiary);"
+                aria-hidden="true"
+              >
+                ▾
+              </span>
+            </span>
+          </summary>
+          <p class="text-body mt-5">{item.answer}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+{faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}

@@ -1,0 +1,81 @@
+---
+import { SITE } from '../config/site';
+import { ENV } from '../config/env';
+import { buildPageTitle, SEO_DEFAULTS } from '../lib/seo';
+import { absoluteUrl, canonicalUrl } from '../lib/urls';
+import PreviewNoIndex from './PreviewNoIndex.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  pathname: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = SITE.description,
+  pathname,
+  ogImage = SITE.ogImage,
+  ogType = 'website',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const pageTitle = buildPageTitle(title);
+const canonical = canonicalUrl(pathname);
+const imageUrl = absoluteUrl(ogImage);
+const jsonLdScripts = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const shouldIndex = ENV.indexable && !noindex;
+---
+
+<PreviewNoIndex />
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="author" content={SITE.author} />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+{shouldIndex ? (
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+) : (
+  <meta name="robots" content="noindex, nofollow" />
+)}
+
+{ENV.googleSiteVerification && (
+  <meta name="google-site-verification" content={ENV.googleSiteVerification} />
+)}
+{ENV.bingSiteVerification && (
+  <meta name="msvalidate.01" content={ENV.bingSiteVerification} />
+)}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={SEO_DEFAULTS.ogImageAlt} />
+<meta property="og:locale" content={SITE.locale} />
+
+<meta name="twitter:card" content={SEO_DEFAULTS.twitterCard} />
+<meta name="twitter:site" content={SITE.twitterHandle} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:image:alt" content={SEO_DEFAULTS.ogImageAlt} />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+{
+  jsonLdScripts.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))
+}

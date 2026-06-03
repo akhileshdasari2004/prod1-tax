@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import LumpsumCalculatorApp from '../components/lumpsum/LumpsumCalculatorApp.astro';
+import LumpsumGuideSections from '../components/lumpsum/LumpsumGuideSections.astro';
+import { getRelatedCalculators } from '../config/calculators';
+import { lumpsumPageMeta, lumpsumFaqs } from '../content/lumpsum-calculator-page';
+import { calculatorPageJsonLd } from '../lib/schema';
+
+const pathname = '/lumpsum-calculator';
+const { title, description, keywords, lastUpdated } = lumpsumPageMeta;
+const related = getRelatedCalculators('lumpsum');
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Investing', href: '/investing' },
+  { label: 'Lumpsum Calculator' },
+];
+
+const jsonLd = calculatorPageJsonLd({
+  pathname,
+  title,
+  description,
+  keywords: [...keywords],
+  breadcrumbs,
+  faqs: lumpsumFaqs,
+});
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <article>
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="prose-width animate-in">
+      <p class="text-eyebrow">One-time investment · Compound growth</p>
+      <h1 class="text-display mt-4 text-balance">Lumpsum Calculator</h1>
+      <p class="text-body-lg mt-5 text-balance">
+        {description}
+      </p>
+      <p class="text-caption mt-4">
+        Also known as: lumpsum investment calculator, mutual fund lumpsum calculator, one-time investment
+        calculator, investment return calculator.
+      </p>
+      {
+        lastUpdated && (
+          <p class="text-caption mt-2">
+            Last updated: <time datetime={lastUpdated}>{lastUpdated}</time>
+          </p>
+        )
+      }
+    </header>
+
+    <LumpsumCalculatorApp />
+    <LumpsumGuideSections />
+    <FAQSection title="Lumpsum calculator FAQs" items={lumpsumFaqs} embedSchema={false} />
+    <RelatedCalculators calculators={related} />
+  </article>
+</BaseLayout>

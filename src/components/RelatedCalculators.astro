@@ -1,0 +1,31 @@
+---
+import type { CalculatorMeta } from '../config/calculators';
+
+interface Props {
+  title?: string;
+  calculators: CalculatorMeta[];
+}
+
+const { title = 'Related calculators', calculators } = Astro.props;
+---
+
+{
+  calculators.length > 0 && (
+    <section class="mt-16" aria-labelledby="related-calculators-heading">
+      <h2 id="related-calculators-heading" class="text-title-2">
+        {title}
+      </h2>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {calculators.map((calc) => (
+          <li class="animate-in">
+            <a href={calc.href} class="card card-interactive block h-full">
+              <h3 class="text-title-4">{calc.name}</h3>
+              <p class="text-body-sm mt-3">{calc.shortDescription}</p>
+              <span class="link-arrow mt-6 inline-flex text-body-sm">Use {calc.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

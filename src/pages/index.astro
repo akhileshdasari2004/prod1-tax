@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import CategoryShowcase from '../components/home/CategoryShowcase.astro';
+import FeaturedCalculators from '../components/home/FeaturedCalculators.astro';
+import WhySection from '../components/home/WhySection.astro';
+import HomeSeoArticle from '../components/home/HomeSeoArticle.astro';
+import HomeFaqPreview from '../components/home/HomeFaqPreview.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import TrustBar from '../components/home/TrustBar.astro';
+import { calculators } from '../config/calculators';
+import { homeFaqPreview } from '../config/homepage';
+import { homePageJsonLd } from '../lib/schema';
+
+const pathname = '/';
+
+const metaDescription =
+  'Free financial calculators for investing, loans, taxes, retirement planning, and wealth building. Fast, accurate, private tools with no registration — built for clarity.';
+
+const jsonLd = homePageJsonLd({
+  title: 'Financial Calculators Designed For Clarity',
+  description: metaDescription,
+  faqs: homeFaqPreview,
+});
+---
+
+<BaseLayout
+  title="Financial Calculators Designed For Clarity"
+  description={metaDescription}
+  pathname={pathname}
+  jsonLd={jsonLd}
+>
+  <HomeHero />
+  <CategoryShowcase />
+  <FeaturedCalculators />
+  <WhySection />
+  <TrustBar />
+  <HomeSeoArticle />
+  <HomeFaqPreview />
+  <RelatedCalculators title="All calculators" calculators={calculators} />
+</BaseLayout>

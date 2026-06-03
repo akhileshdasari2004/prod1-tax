@@ -1,0 +1,30 @@
+---
+import { SITE } from '../../config/site';
+---
+
+<section
+  class="mt-24 rounded-2xl border px-6 py-8 sm:px-10"
+  style="border-color: var(--border-subtle); background: var(--bg-tertiary);"
+  aria-label="Trust and transparency"
+>
+  <ul class="grid gap-6 sm:grid-cols-3 sm:gap-8">
+    <li>
+      <p class="text-caption font-semibold" style="color: var(--text-primary);">Editorial standard</p>
+      <p class="text-body-sm mt-2">
+        Educational content is reviewed for clarity and formula accuracy. See our <a href="/about">about page</a> for how we work.
+      </p>
+    </li>
+    <li>
+      <p class="text-caption font-semibold" style="color: var(--text-primary);">Privacy-first</p>
+      <p class="text-body-sm mt-2">
+        Calculations run in your browser. Read our <a href="/privacy">privacy policy</a> for details on data handling.
+      </p>
+    </li>
+    <li>
+      <p class="text-caption font-semibold" style="color: var(--text-primary);">Not financial advice</p>
+      <p class="text-body-sm mt-2">
+        {SITE.name} provides tools and information, not personalized recommendations. Review our <a href="/terms">terms of use</a>.
+      </p>
+    </li>
+  </ul>
+</section>

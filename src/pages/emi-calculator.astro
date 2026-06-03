@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import EmiCalculatorApp from '../components/emi/EmiCalculatorApp.astro';
+import EmiGuideSections from '../components/emi/EmiGuideSections.astro';
+import { getRelatedCalculators } from '../config/calculators';
+import { emiPageMeta, emiFaqs } from '../content/emi-calculator-page';
+import { calculatorPageJsonLd } from '../lib/schema';
+
+const pathname = '/emi-calculator';
+const { title, description, keywords, lastUpdated } = emiPageMeta;
+const related = getRelatedCalculators('emi');
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Loans', href: '/loans' },
+  { label: 'EMI Calculator' },
+];
+
+const jsonLd = calculatorPageJsonLd({
+  pathname,
+  title,
+  description,
+  keywords: [...keywords],
+  breadcrumbs,
+  faqs: emiFaqs,
+});
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} jsonLd={jsonLd}>
+  <article>
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="prose-width animate-in">
+      <p class="text-eyebrow">Home loan · Mortgage · Personal loan</p>
+      <h1 class="text-display mt-4 text-balance">EMI Calculator</h1>
+      <p class="text-body-lg mt-5 text-balance">
+        {description}
+      </p>
+      <p class="text-caption mt-4">
+        Also known as: loan EMI calculator, mortgage EMI calculator, home loan EMI calculator, EMI amortization
+        calculator.
+      </p>
+      {
+        lastUpdated && (
+          <p class="text-caption mt-2">
+            Last updated: <time datetime={lastUpdated}>{lastUpdated}</time>
+          </p>
+        )
+      }
+    </header>
+
+    <EmiCalculatorApp />
+    <EmiGuideSections />
+    <FAQSection title="EMI calculator FAQs" items={emiFaqs} embedSchema={false} />
+    <RelatedCalculators calculators={related} />
+  </article>
+</BaseLayout>

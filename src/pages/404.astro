@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pathname = '/404';
+const title = 'Page not found';
+const description = 'The page you requested does not exist on FinanceToolsHub.';
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} noindex={true}>
+  <section class="mx-auto max-w-lg text-center animate-in">
+    <p class="text-eyebrow">404</p>
+    <h1 class="text-title-1 mt-3 text-balance">Page not found</h1>
+    <p class="text-body-lg mt-5">
+      The URL may be mistyped or the page may have moved. Try one of our calculators instead.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn-primary">Go home</a>
+      <a href="/calculators" class="btn-secondary">Browse all calculators</a>
+    </div>
+    <p class="text-body-sm mt-8">
+      Popular tools:
+      <a href="/sip-calculator" class="mx-1 underline" style="color: var(--accent);">SIP calculator</a>,
+      <a href="/emi-calculator" class="mx-1 underline" style="color: var(--accent);">EMI calculator</a>,
+      <a href="/gst-calculator" class="underline" style="color: var(--accent);">GST calculator</a>
+    </p>
+  </section>
+</BaseLayout>

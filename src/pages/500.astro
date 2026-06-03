@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pathname = '/500';
+const title = 'Server error';
+const description = 'Something went wrong while loading FinanceToolsHub.';
+---
+
+<BaseLayout title={title} description={description} pathname={pathname} noindex={true}>
+  <section class="mx-auto max-w-lg text-center animate-in">
+    <p class="text-eyebrow">500</p>
+    <h1 class="text-title-1 mt-3 text-balance">Something went wrong</h1>
+    <p class="text-body-lg mt-5">
+      We hit an unexpected error. Please refresh the page or return home. If the problem persists, tell us which
+      calculator you were using.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn-primary">Go home</a>
+      <a href="/contact" class="btn-secondary">Contact support</a>
+    </div>
+    <p class="text-body-sm mt-8">
+      Popular tools:
+      <a href="/sip-calculator" class="mx-1 underline" style="color: var(--accent);">SIP calculator</a>,
+      <a href="/emi-calculator" class="mx-1 underline" style="color: var(--accent);">EMI calculator</a>,
+      <a href="/gst-calculator" class="underline" style="color: var(--accent);">GST calculator</a>
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,4 @@
+# Google AdSense ads.txt — replace pub-XXXXXXXXXXXXXXXX with your publisher ID after approval.
+# https://support.google.com/adsense/answer/7532444
+#
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
