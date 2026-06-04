@@ -5,16 +5,20 @@ import sitemap from '@astrojs/sitemap';
 
 import react from '@astrojs/react';
 
+import cloudflare from '@astrojs/cloudflare';
+
 /** @type {import('astro').AstroUserConfig} */
 export default defineConfig({
   site: 'https://realfinancetools.com',
   output: 'static',
   compressHTML: true,
   trailingSlash: 'never',
+
   build: {
     format: 'directory',
     inlineStylesheets: 'auto',
   },
+
   integrations: [sitemap({
     changefreq: 'weekly',
     priority: 0.7,
@@ -44,7 +48,10 @@ export default defineConfig({
       return { ...item, priority: 0.6 };
     },
   }), react()],
+
   vite: {
     plugins: [tailwindcss()],
   },
+
+  adapter: cloudflare(),
 });
