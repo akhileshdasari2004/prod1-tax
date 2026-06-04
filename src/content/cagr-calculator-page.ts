@@ -200,7 +200,7 @@ export const cagrFaqs: FAQItem[] = [
   {
     question: 'Is this CAGR calculator free?',
     answer:
-      'Yes. FinanceToolsHub provides this CAGR calculator at no charge. Calculations run in your browser; we do not store your inputs on a server.',
+      'Yes. RealFinanceTools provides this CAGR calculator at no charge. Calculations run in your browser; we do not store your inputs on a server.',
   },
   {
     question: 'What related calculators should I use?',

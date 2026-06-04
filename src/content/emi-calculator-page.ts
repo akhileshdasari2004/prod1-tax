@@ -200,7 +200,7 @@ export const emiFaqs: FAQItem[] = [
   {
     question: 'Is this EMI calculator free?',
     answer:
-      'Yes. Calculations run in your browser on FinanceToolsHub. We do not store your loan inputs on a server.',
+      'Yes. Calculations run in your browser on RealFinanceTools. We do not store your loan inputs on a server.',
   },
   {
     question: 'What related calculators are available?',

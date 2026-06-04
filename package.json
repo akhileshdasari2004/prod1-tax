@@ -1,5 +1,5 @@
 {
-  "name": "financetoolshub",
+  "name": "realfinancetools",
   "type": "module",
   "version": "1.0.0",
   "private": true,
@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "generate:brand": "node scripts/generate-brand-assets.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",

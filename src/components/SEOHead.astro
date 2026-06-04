@@ -1,7 +1,7 @@
 ---
 import { SITE } from '../config/site';
 import { ENV } from '../config/env';
-import { buildPageTitle, SEO_DEFAULTS } from '../lib/seo';
+import { formatPageTitle, SEO_DEFAULTS } from '../lib/seo';
 import { absoluteUrl, canonicalUrl } from '../lib/urls';
 import PreviewNoIndex from './PreviewNoIndex.astro';
 
@@ -25,7 +25,7 @@ const {
   jsonLd,
 } = Astro.props;
 
-const pageTitle = buildPageTitle(title);
+const pageTitle = formatPageTitle(title);
 const canonical = canonicalUrl(pathname);
 const imageUrl = absoluteUrl(ogImage);
 const jsonLdScripts = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
@@ -41,8 +41,9 @@ const shouldIndex = ENV.indexable && !noindex;
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
 <meta name="author" content={SITE.author} />
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content={SITE.themeColorLight} media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content={SITE.themeColor} media="(prefers-color-scheme: dark)" />
+<meta name="application-name" content={SITE.name} />
 {shouldIndex ? (
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 ) : (
@@ -74,7 +75,10 @@ const shouldIndex = ENV.indexable && !noindex;
 <meta name="twitter:image" content={imageUrl} />
 <meta name="twitter:image:alt" content={SEO_DEFAULTS.ogImageAlt} />
 
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link rel="manifest" href="/site.webmanifest" />
 
 {
   jsonLdScripts.map((schema) => (

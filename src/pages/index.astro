@@ -9,22 +9,22 @@ import HomeFaqPreview from '../components/home/HomeFaqPreview.astro';
 import AllCalculatorsSection from '../components/home/AllCalculatorsSection.astro';
 import TrustBar from '../components/home/TrustBar.astro';
 import { homeFaqPreview } from '../config/homepage';
+import { SITE } from '../config/site';
 import { homePageJsonLd } from '../lib/schema';
 
 const pathname = '/';
 
-const metaDescription =
-  'Free financial calculators for investing, loans, and taxes. Fast, accurate, private tools with no registration — built for clarity.';
+const metaDescription = SITE.description;
 
 const jsonLd = homePageJsonLd({
-  title: 'Financial calculators designed for clarity 🤚',
+  title: SITE.title,
   description: metaDescription,
   faqs: homeFaqPreview,
 });
 ---
 
 <BaseLayout
-  title="Financial calculators designed for clarity 🤚"
+  title={SITE.title}
   description={metaDescription}
   pathname={pathname}
   jsonLd={jsonLd}

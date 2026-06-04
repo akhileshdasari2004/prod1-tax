@@ -1,5 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="FinanceToolsHub">
-  <rect width="1200" height="630" fill="#f5f5f7"/>
-  <text x="80" y="300" fill="#1d1d1f" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="600" letter-spacing="-0.02em">FinanceToolsHub</text>
-  <text x="80" y="380" fill="#6e6e73" font-family="Inter, system-ui, sans-serif" font-size="32" font-weight="400">Free finance calculators</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="RealFinanceTools">
+  <defs>
+    <linearGradient id="og-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EFF6FF"/>
+      <stop offset="100%" stop-color="#DBEAFE"/>
+    </linearGradient>
+    <linearGradient id="og-accent" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#og-bg)"/>
+  <rect x="80" y="80" width="120" height="120" rx="28" fill="url(#og-accent)"/>
+  <path fill="#fff" d="M108 176V104h22c12 0 19 6 19 16s-7 16-19 16h-10v40h-10zm20-32h9c5 0 8-3 8-7s-3-7-8-7h-9v14z"/>
+  <path fill="none" stroke="#22C55E" stroke-width="6" stroke-linecap="round" d="M168 176v-48l16 14 18-22 16 11"/>
+  <text x="220" y="175" fill="#1E40AF" font-family="Inter, system-ui, sans-serif" font-size="64" font-weight="700" letter-spacing="-0.02em">RealFinanceTools</text>
+  <text x="220" y="250" fill="#2563EB" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="500">Financial Calculators &amp; Planning Tools</text>
+  <text x="220" y="320" fill="#475569" font-family="Inter, system-ui, sans-serif" font-size="28">EMI · SIP · Investment · Tax · Personal Finance</text>
 </svg>

@@ -199,7 +199,7 @@ export const lumpsumFaqs: FAQItem[] = [
   {
     question: 'Is this lumpsum calculator free?',
     answer:
-      'Yes. FinanceToolsHub provides this calculator at no charge. Calculations run locally in your browser; inputs are not stored on our servers.',
+      'Yes. RealFinanceTools provides this calculator at no charge. Calculations run locally in your browser; inputs are not stored on our servers.',
   },
   {
     question: 'What related tools should I use?',

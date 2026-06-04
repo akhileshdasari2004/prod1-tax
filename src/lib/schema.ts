@@ -1,5 +1,5 @@
 import { SITE } from '../config/site';
-import { buildPageTitle } from './seo';
+import { formatPageTitle } from './seo';
 import { absoluteUrl, canonicalUrl } from './urls';
 
 export type BreadcrumbInput = { label: string; href?: string };
@@ -14,7 +14,7 @@ export function organizationJsonLd() {
     '@id': organizationId,
     name: SITE.name,
     url: SITE.url,
-    logo: absoluteUrl('/favicon.svg'),
+    logo: absoluteUrl(SITE.logoImage),
     email: SITE.email,
     description: SITE.description,
   };
@@ -61,7 +61,7 @@ export function webPageJsonLd(options: {
     '@type': 'WebPage',
     '@id': `${url}#webpage`,
     url,
-    name: buildPageTitle(options.title),
+    name: formatPageTitle(options.title),
     description: options.description,
     isPartOf: { '@id': websiteId },
     about: { '@id': organizationId },
@@ -78,7 +78,7 @@ export function webApplicationJsonLd(options: {
   const url = canonicalUrl(options.pathname);
   return {
     '@context': 'https://schema.org',
-    '@type': 'WebApplication',
+    '@type': ['WebApplication', 'SoftwareApplication'],
     '@id': `${url}#app`,
     name: options.name,
     url,
@@ -174,7 +174,7 @@ export function homePageJsonLd(options: {
       '@type': 'WebPage',
       '@id': `${SITE.url}/#webpage`,
       url: SITE.url,
-      name: buildPageTitle(options.title),
+      name: formatPageTitle(options.title),
       description: options.description,
       isPartOf: { '@id': websiteId },
       about: { '@id': organizationId },

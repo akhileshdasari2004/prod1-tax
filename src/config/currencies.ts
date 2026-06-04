@@ -1,4 +1,4 @@
-export const CURRENCY_STORAGE_KEY = 'fth-currency';
+export const CURRENCY_STORAGE_KEY = 'rft-currency';
 
 export const DEFAULT_CURRENCY = 'USD' as const;
 

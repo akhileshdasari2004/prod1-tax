@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="RealFinanceTools">
+  <defs>
+    <linearGradient id="rft-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="rft-chart" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#22C55E"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#rft-bg)"/>
+  <!-- Letter R -->
+  <path fill="#ffffff" d="M128 352V160h88c48 0 76 26 76 68 0 28-14 50-38 62l52 62h-92l-44-54h-32v54H128zm80-120h36c20 0 32-10 32-26s-12-26-32-26h-36v52z"/>
+  <!-- Growth chart + arrow -->
+  <path fill="none" stroke="url(#rft-chart)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" d="M300 340V220l48 40 56-72 48 32"/>
+  <path fill="#22C55E" d="M452 200l28 28-28 28v-20h-48v-36h48z"/>
+</svg>

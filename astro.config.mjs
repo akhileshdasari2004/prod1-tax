@@ -7,7 +7,7 @@ import react from '@astrojs/react';
 
 /** @type {import('astro').AstroUserConfig} */
 export default defineConfig({
-  site: 'https://financetoolshub.com',
+  site: 'https://realfinancetools.com',
   output: 'static',
   compressHTML: true,
   trailingSlash: 'never',
@@ -21,7 +21,7 @@ export default defineConfig({
     filter: (page) => !page.includes('/404') && !page.includes('/500'),
     serialize(item) {
       const url = item.url.replace(/\/$/, '');
-      if (url === 'https://financetoolshub.com') {
+      if (url === 'https://realfinancetools.com') {
         return { ...item, priority: 1.0 };
       }
       const calculatorPaths = [

@@ -1,4 +1,4 @@
-# FinanceToolsHub
+# RealFinanceTools
 
 SEO-first static finance calculator site built with Astro 6, Tailwind CSS v4, and TypeScript. Deployed to Cloudflare Pages.
 
@@ -26,6 +26,16 @@ npm run build
 npm run preview
 ```
 
+## Brand assets
+
+Replace `public/logo.svg` with your [logofa.st](https://logofa.st) export, then run:
+
+```bash
+npm run generate:brand
+```
+
+This regenerates `logo.png`, favicons, and PWA icons referenced in `SEOHead.astro` and `site.webmanifest`.
+
 ## Deploy to Cloudflare Pages
 
 See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full production checklist (Search Console, AdSense, Bing, analytics, preview `noindex`, and validation).
@@ -41,7 +51,7 @@ See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full production checklist (Sear
 
 ```bash
 npm run build
-npx wrangler pages deploy dist --project-name=financetoolshub
+npx wrangler pages deploy dist --project-name=realfinancetools
 ```
 
 ## Design system
@@ -73,4 +83,4 @@ public/
 
 ## License
 
-Proprietary — FinanceToolsHub.
+Proprietary — RealFinanceTools.

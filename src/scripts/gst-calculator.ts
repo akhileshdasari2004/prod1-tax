@@ -1,9 +1,16 @@
+import {
+  trackCalculatorResultView,
+  trackCalculatorRun,
+  trackShareClick,
+} from '../lib/analytics-events';
 import { bindRange, setFormError } from '../lib/calculator-form';
 import { analyzeGst, type GstMode } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
 import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 
+const TOOL_ID = 'gst';
 const PARAM_KEYS = { mode: 'm', amount: 'a', rate: 'r' } as const;
+let hasTrackedRun = false;
 
 type GstInputs = {
   amount: number;
@@ -132,6 +139,12 @@ export function initGstCalculator(): void {
     syncRateChips(inputs.rate);
     setPanelVisible(true);
     syncUrl(inputs);
+
+    if (!hasTrackedRun) {
+      trackCalculatorRun(TOOL_ID);
+      hasTrackedRun = true;
+    }
+    trackCalculatorResultView(TOOL_ID);
   };
 
   form.addEventListener('submit', (e) => e.preventDefault());
@@ -156,6 +169,7 @@ export function initGstCalculator(): void {
     const inputs = readInputs(form);
     if (!inputs) return;
     syncUrl(inputs);
+    trackShareClick(TOOL_ID);
     try {
       await navigator.clipboard.writeText(window.location.href);
       const btn = document.getElementById('gst-share-btn');

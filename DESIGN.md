@@ -1,4 +1,4 @@
-# FinanceToolsHub Design System
+# RealFinanceTools Design System
 
 A premium, Apple-inspired design language for a static finance tools platform. Calm, confident, and editorial — never dashboard-heavy or template-driven.
 
@@ -173,7 +173,7 @@ Base unit: **4px**
 
 ### Dark mode
 
-- Class `html.dark` toggled via `localStorage` key `fth-theme`
+- Class `html.dark` toggled via `localStorage` key `rft-theme`
 - Inline boot script prevents flash
 - `color-scheme: light | dark` on root
 

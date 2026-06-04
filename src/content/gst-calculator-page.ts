@@ -94,7 +94,7 @@ export const gstGuideSections = [
     heading: 'What is a GST calculator?',
     paragraphs: [
       'A GST calculator computes tax on a given amount and rate, either adding tax to an exclusive base or extracting tax from an inclusive total. You choose the mode, enter the amount and GST rate, and receive GST amount plus the final figure appropriate to that mode.',
-      'FinanceToolsHub’s version is built for speed on mobile and desktop: segmented Add/Remove modes, preset rates, a visual base-versus-tax bar, shareable URLs, and plain-language formulas so you can verify the math without opening a spreadsheet.',
+      'The RealFinanceTools GST calculator is built for speed on mobile and desktop: segmented Add/Remove modes, preset rates, a visual base-versus-tax bar, shareable URLs, and plain-language formulas so you can verify the math without opening a spreadsheet.',
     ],
   },
   {
@@ -203,7 +203,7 @@ export const gstFaqs: FAQItem[] = [
   {
     question: 'Is this GST calculator free?',
     answer:
-      'Yes. Calculations run in your browser on FinanceToolsHub. We do not store your amounts on a server.',
+      'Yes. Calculations run in your browser on RealFinanceTools. We do not store your amounts on a server.',
   },
   {
     question: 'Is this the same as an income tax calculator?',
@@ -211,7 +211,7 @@ export const gstFaqs: FAQItem[] = [
       'No. This tool handles GST/VAT-style percentage splits on a single amount. Income tax needs slabs, deductions, and annual aggregation — use specialized income-tax tools for that.',
   },
   {
-    question: 'What related calculators are on FinanceToolsHub?',
+    question: 'What related calculators are on RealFinanceTools?',
     answer:
       'Use our EMI calculator for loans, SIP and lumpsum calculators for investments, and CAGR calculator for annualized returns. GST focuses on tax-inclusive and tax-exclusive pricing splits.',
   },

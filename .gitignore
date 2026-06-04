@@ -3,6 +3,9 @@ node_modules/
 
 # build
 dist/
+public/.favicon-32.png
+public/og-default-compressed.jpg
+public/og-default-opt.jpg
 
 # astro
 .astro/

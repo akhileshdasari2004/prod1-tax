@@ -101,6 +101,7 @@ const { id = 'currency-select', showLabel = false, variant = 'nav' } = Astro.pro
     isCurrencyCode,
     type CurrencyCode,
   } from '../config/currencies';
+  import { trackCurrencyChange } from '../lib/analytics-events';
   import { CURRENCY_CHANGE_EVENT, setSelectedCurrency } from '../lib/currency';
 
   function initCurrencySelectors(): void {
@@ -134,6 +135,7 @@ const { id = 'currency-select', showLabel = false, variant = 'nav' } = Astro.pro
         if (!isCurrencyCode(code)) return;
         applyValue(code, select);
         setSelectedCurrency(code);
+        trackCurrencyChange(code);
       });
     });
 

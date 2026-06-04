@@ -1,10 +1,17 @@
+import {
+  trackCalculatorResultView,
+  trackCalculatorRun,
+  trackShareClick,
+} from '../lib/analytics-events';
 import { bindRange, setFormError } from '../lib/calculator-form';
 import { lumpsumFutureValue, lumpsumProjectionByYear } from '../lib/finance';
 import type { LumpsumYearPoint } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
 import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 
+const TOOL_ID = 'lumpsum';
 const PARAM_KEYS = { principal: 'p', rate: 'r', years: 'y' } as const;
+let hasTrackedRun = false;
 
 type LumpsumInputs = {
   principal: number;
@@ -179,6 +186,12 @@ export function initLumpsumCalculator(): void {
     setPanelVisible(true);
     syncUrl(inputs);
 
+    if (!hasTrackedRun) {
+      trackCalculatorRun(TOOL_ID);
+      hasTrackedRun = true;
+    }
+    trackCalculatorResultView(TOOL_ID);
+
     if (canvas instanceof HTMLCanvasElement) drawChart(canvas, series, inputs.principal);
     if (tbody) renderTable(tbody, series);
   };
@@ -197,6 +210,7 @@ export function initLumpsumCalculator(): void {
     const inputs = readInputs(form);
     if (!inputs) return;
     syncUrl(inputs);
+    trackShareClick(TOOL_ID);
     try {
       await navigator.clipboard.writeText(window.location.href);
       const btn = document.getElementById('ls-share-btn');

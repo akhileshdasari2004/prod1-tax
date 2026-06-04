@@ -35,8 +35,8 @@ export const design = {
     input: '8px',
   },
   motion: {
-    themeStorageKey: 'fth-theme',
-    currencyStorageKey: 'fth-currency',
+    themeStorageKey: 'rft-theme',
+    currencyStorageKey: 'rft-currency',
     easeStandard: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
     durationNormal: 250,
   },

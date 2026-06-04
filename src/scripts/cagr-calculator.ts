@@ -1,10 +1,17 @@
+import {
+  trackCalculatorResultView,
+  trackCalculatorRun,
+  trackShareClick,
+} from '../lib/analytics-events';
 import { bindRange, setFormError } from '../lib/calculator-form';
 import { analyzeCagr } from '../lib/finance';
 import type { CagrYearPoint } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
 import { formatCagrPercent, formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 
+const TOOL_ID = 'cagr';
 const PARAM_KEYS = { begin: 'b', end: 'e', years: 'y' } as const;
+let hasTrackedRun = false;
 
 type CagrInputs = {
   begin: number;
@@ -204,6 +211,12 @@ export function initCagrCalculator(): void {
     setPanelVisible(true);
     syncUrl(inputs);
 
+    if (!hasTrackedRun) {
+      trackCalculatorRun(TOOL_ID);
+      hasTrackedRun = true;
+    }
+    trackCalculatorResultView(TOOL_ID);
+
     if (canvas instanceof HTMLCanvasElement) drawLineChart(canvas, analysis.curve, inputs.begin);
     if (tbody) renderTable(tbody, analysis.curve, inputs.begin);
   };
@@ -222,6 +235,7 @@ export function initCagrCalculator(): void {
     const inputs = readInputs(form);
     if (!inputs) return;
     syncUrl(inputs);
+    trackShareClick(TOOL_ID);
     try {
       await navigator.clipboard.writeText(window.location.href);
       const btn = document.getElementById('cagr-share-btn');

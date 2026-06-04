@@ -21,12 +21,18 @@ const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
   <div class="mt-12 grid gap-6 lg:grid-cols-2">
     <section class="card lg:col-span-2">
       <h2 class="text-title-4">Email</h2>
-      <p class="text-body-sm mt-3">Primary channel for all inquiries:</p>
-      <p class="mt-4">
-        <a href={`mailto:${SITE.email}`} class="text-body font-semibold" style="color: var(--accent);">
-          {SITE.email}
-        </a>
-      </p>
+      <ul class="text-body mt-4 space-y-3">
+        {
+          contactPage.emails.map((row) => (
+            <li>
+              <span class="text-body-sm font-medium">{row.label}: </span>
+              <a href={`mailto:${row.address}`} class="font-semibold" style="color: var(--accent);">
+                {row.address}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
       <p class="text-caption mt-4">{contactPage.responseTime}</p>
     </section>
 

@@ -1,10 +1,17 @@
+import {
+  trackCalculatorResultView,
+  trackCalculatorRun,
+  trackShareClick,
+} from '../lib/analytics-events';
 import { bindRange, setFormError } from '../lib/calculator-form';
 import { sipFutureValue, sipProjectionByYear } from '../lib/finance';
 import { onCurrencyChange } from '../lib/currency';
 import { formatSelectedMoney, parsePositiveNumber } from '../lib/format';
 import type { SipYearPoint } from '../lib/finance';
 
+const TOOL_ID = 'sip';
 const PARAM_KEYS = { monthly: 'm', rate: 'r', years: 'y' } as const;
+let hasTrackedRun = false;
 
 type SipInputs = {
   monthly: number;
@@ -178,6 +185,12 @@ export function initSipCalculator(): void {
     setPanelVisible(true);
     syncUrl(inputs);
 
+    if (!hasTrackedRun) {
+      trackCalculatorRun(TOOL_ID);
+      hasTrackedRun = true;
+    }
+    trackCalculatorResultView(TOOL_ID);
+
     if (canvas instanceof HTMLCanvasElement) drawChart(canvas, series);
     if (tbody) renderTable(tbody, series);
   };
@@ -196,6 +209,7 @@ export function initSipCalculator(): void {
     const inputs = readInputs(form);
     if (!inputs) return;
     syncUrl(inputs);
+    trackShareClick(TOOL_ID);
     try {
       await navigator.clipboard.writeText(window.location.href);
       const btn = document.getElementById('sip-share-btn');

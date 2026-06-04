@@ -1,0 +1,49 @@
+---
+import { SITE } from '../config/site';
+
+interface Props {
+  /** Show wordmark next to mark */
+  showName?: boolean;
+  /** nav | footer */
+  variant?: 'nav' | 'footer';
+  class?: string;
+}
+
+const { showName = true, variant = 'nav', class: className = '' } = Astro.props;
+
+const size = variant === 'nav' ? 32 : 28;
+const logoSrc = SITE.logoImage;
+const logoSvg = SITE.logoSvg;
+---
+
+<a
+  href="/"
+  class:list={[
+    'brand-logo inline-flex items-center gap-3 font-semibold transition-opacity hover:opacity-80',
+    className,
+  ]}
+  style="color: var(--text-primary);"
+  aria-label={`${SITE.name} home`}
+>
+  <picture class="brand-logo__picture shrink-0">
+    <source srcset={logoSrc} type="image/png" />
+    <img
+      src={logoSvg}
+      alt=""
+      width={size}
+      height={size}
+      class="brand-logo__img rounded-lg"
+      loading="eager"
+      decoding="async"
+    />
+  </picture>
+  {showName && <span class:list={[variant === 'nav' ? 'text-body-sm' : 'text-xs']}>{SITE.name}</span>}
+</a>
+
+<style>
+  .brand-logo__img {
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+  }
+</style>

@@ -3,6 +3,7 @@ import { isAnalyticsEnabled, ENV } from '../config/env';
 
 const enabled = isAnalyticsEnabled();
 const measurementId = ENV.gaMeasurementId;
+const productionHost = ENV.productionHost;
 ---
 
 {
@@ -13,17 +14,56 @@ const measurementId = ENV.gaMeasurementId;
         async
         src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
       />
-      <script is:inline define:vars={{ measurementId }}>
+      <script
+        is:inline
+        define:vars={{ measurementId, productionHost }}
+      >
         window.dataLayer = window.dataLayer || [];
         function gtag() {
           dataLayer.push(arguments);
         }
-        gtag('js', new Date());
-        gtag('config', measurementId, {
-          anonymize_ip: true,
-          allow_google_signals: false,
-          allow_ad_personalization_signals: false,
-        });
+        window.gtag = gtag;
+
+        function rftIsProductionHost() {
+          var host = (location.hostname || '').toLowerCase();
+          if (!host || host === 'localhost' || host === '127.0.0.1') return false;
+          if (host === 'pages.dev' || host.slice(-10) === '.pages.dev') return false;
+          if (host.slice(-12) === '.workers.dev') return false;
+          return host === productionHost || host.endsWith('.' + productionHost);
+        }
+
+        window.rftTrack = function (name, params) {
+          if (!rftIsProductionHost()) return;
+          gtag('event', name, params || {});
+        };
+
+        if (rftIsProductionHost()) {
+          gtag('js', new Date());
+          gtag('config', measurementId, {
+            anonymize_ip: true,
+            allow_google_signals: false,
+            allow_ad_personalization_signals: false,
+            send_page_view: true,
+          });
+        }
+
+        document.addEventListener(
+          'click',
+          function (e) {
+            var target = e.target;
+            if (!(target instanceof Element)) return;
+            var anchor = target.closest('a[href]');
+            if (!(anchor instanceof HTMLAnchorElement)) return;
+            if (!anchor.href || anchor.href.indexOf(location.origin) === 0) return;
+            if (anchor.target === '_blank' || anchor.rel.indexOf('external') !== -1) {
+              window.rftTrack('outbound_click', {
+                link_url: anchor.href,
+                link_label: (anchor.textContent || '').trim().slice(0, 80),
+              });
+            }
+          },
+          true,
+        );
       </script>
     </>
   )

@@ -1,15 +1,20 @@
 import { SITE } from '../config/site';
 
-/** Consistent document title: avoid duplicate "| FinanceToolsHub | FinanceToolsHub". */
-export function buildPageTitle(pageTitle: string): string {
-  const trimmed = pageTitle.trim();
-  if (trimmed === SITE.name || trimmed === SITE.title) {
-    return SITE.title;
+/** Consistent document title: avoid duplicate "| RealFinanceTools | RealFinanceTools". */
+export function formatPageTitle(pageTitle: string): string {
+  const normalized = pageTitle.trim();
+  if (normalized.includes(SITE.name)) {
+    return normalized;
   }
-  return `${trimmed} | ${SITE.name}`;
+  return `${normalized} | ${SITE.name}`;
 }
 
 export const SEO_DEFAULTS = {
-  ogImageAlt: 'FinanceToolsHub — free finance calculators for investing, loans, and taxes',
-  twitterCard: 'summary_large_image' as const,
-};
+  ogImageAlt: `${SITE.name} — free financial calculators for EMI, SIP, investing, loans, and taxes`,
+  twitterCard: 'summary_large_image',
+} as const;
+
+export const defaultSeo = SEO_DEFAULTS;
+
+/** @alias formatPageTitle */
+export const buildPageTitle = formatPageTitle;

@@ -1,4 +1,4 @@
-# FinanceToolsHub — Production deployment checklist
+# RealFinanceTools — Production deployment checklist
 
 Use this checklist when deploying to **Cloudflare Pages** and connecting **Google Search Console**, **Google AdSense**, and **Bing Webmaster Tools**.
 
@@ -10,6 +10,7 @@ Use this checklist when deploying to **Cloudflare Pages** and connecting **Googl
 - [ ] `npm run build` completes; `dist/` contains all routes
 - [ ] Copy `.env.example` → `.env` for local testing (optional)
 - [ ] Confirm production domain in `astro.config.mjs` (`site`) and `src/config/site.ts` (`url`)
+- [ ] Run `npm run generate:brand` after replacing `public/logo.svg` with your logofa.st export
 
 ---
 
@@ -35,10 +36,11 @@ Use this checklist when deploying to **Cloudflare Pages** and connecting **Googl
 
 | Variable | Example | Notes |
 |----------|---------|--------|
-| `PUBLIC_GA_MEASUREMENT_ID` | `G-XXXXXXXXXX` | GA4 property for `financetoolshub.com` |
+| `PUBLIC_GA_MEASUREMENT_ID` | `G-XXXXXXXXXX` | GA4 property for `realfinancetools.com` |
 | `PUBLIC_GOOGLE_SITE_VERIFICATION` | `abc123...` | Meta tag **content** from Search Console |
 | `PUBLIC_BING_SITE_VERIFICATION` | `B123...` | Meta tag **content** from Bing Webmaster |
 | `PUBLIC_INDEXABLE` | `true` | Allows indexing + analytics |
+| `PUBLIC_PRODUCTION_HOST` | `realfinancetools.com` | GA4 only fires on this host (and subdomains) |
 
 #### Preview (`*.pages.dev`)
 
@@ -53,15 +55,15 @@ Use this checklist when deploying to **Cloudflare Pages** and connecting **Googl
 ### Files deployed from `public/`
 
 - [ ] `_headers` — security, CSP (includes Google Analytics), cache, `X-Robots-Tag` on 404/500
-- [ ] `robots.txt` — allows `/`, disallows `/404` and `/500`
-- [ ] `sitemap.xml` — index to Astro sitemap
+- [ ] `robots.txt` — allows `/`, disallows `/404` and `/500`, single `Sitemap: .../sitemap-index.xml`
+- [ ] `site.webmanifest`, `apple-touch-icon.png`, Android chrome icons, `logo.png`
 - [ ] `ads.txt` — uncomment and set publisher ID after AdSense approval
 
 ### Deploy
 
 ```bash
 npm run build
-npx wrangler pages deploy dist --project-name=financetoolshub
+npx wrangler pages deploy dist --project-name=realfinancetools
 ```
 
 Or push to Git with Pages CI connected.
@@ -70,18 +72,19 @@ Or push to Git with Pages CI connected.
 
 ## Custom domain
 
-- [ ] Add `financetoolshub.com` (and `www` if used) in Cloudflare Pages → Custom domains
+- [ ] Add `realfinancetools.com` (and `www` if used) in Cloudflare Pages → Custom domains
 - [ ] SSL mode: Full (strict)
 - [ ] Redirect `www` → apex (or apex → `www`) via Cloudflare Redirect Rules — pick one canonical host
 - [ ] Confirm canonical URLs in page source match your chosen host
+- [ ] If you use **Cloudflare Workers** on the same account, disable public `*.workers.dev` routes after the custom domain is live (Dashboard → Workers → settings)
 
 ---
 
 ## Google Search Console
 
-1. Add property: **URL prefix** `https://financetoolshub.com`
+1. Add property: **URL prefix** `https://realfinancetools.com`
 2. Verification: **HTML tag** — copy the `content` value into `PUBLIC_GOOGLE_SITE_VERIFICATION`, redeploy production
-3. Submit sitemap: `https://financetoolshub.com/sitemap-index.xml`
+3. Submit sitemap: `https://realfinancetools.com/sitemap-index.xml`
 4. Request indexing for home + top calculators after launch
 5. Monitor **Coverage**, **Core Web Vitals**, and **Mobile usability**
 
@@ -89,7 +92,7 @@ Or push to Git with Pages CI connected.
 
 ## Bing Webmaster Tools
 
-1. Add site `https://financetoolshub.com`
+1. Add site `https://realfinancetools.com`
 2. Verification: **Meta tag** — copy `content` into `PUBLIC_BING_SITE_VERIFICATION`, redeploy
 3. Submit sitemap: same URL as Google
 4. Enable URL inspection for key calculator pages
@@ -173,13 +176,13 @@ Or push to Git with Pages CI connected.
 
 ## Post-deploy smoke test
 
-- [ ] `https://financetoolshub.com/` loads
+- [ ] `https://realfinancetools.com/` loads
 - [ ] Each calculator computes and updates URL/share state
 - [ ] `/privacy`, `/terms`, `/about`, `/contact` render
 - [ ] Intentional 404 shows custom page
-- [ ] `https://financetoolshub.com/robots.txt` correct
-- [ ] `https://financetoolshub.com/sitemap-index.xml` lists all pages
-- [ ] `https://financetoolshub.com/ads.txt` reachable
+- [ ] `https://realfinancetools.com/robots.txt` correct
+- [ ] `https://realfinancetools.com/sitemap-index.xml` lists all pages
+- [ ] `https://realfinancetools.com/ads.txt` reachable
 - [ ] Security headers present (check with [securityheaders.com](https://securityheaders.com))
 - [ ] Preview URL shows `noindex` in HTML when `PUBLIC_INDEXABLE=false`
 
@@ -194,4 +197,4 @@ Or push to Git with Pages CI connected.
 
 ## Support contacts
 
-- Site email: `hello@financetoolshub.com` (see `src/config/site.ts`)
+- Site email: `hello@realfinancetools.com` (see `src/config/site.ts`)

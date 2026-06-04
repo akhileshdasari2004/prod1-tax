@@ -1,4 +1,5 @@
 import type { BreadcrumbInput } from '../lib/schema';
+import { SITE } from './site';
 
 export type StaticPageSeo = {
   pathname: string;
@@ -12,7 +13,7 @@ export const staticPageSeo = {
     pathname: '/calculators',
     title: 'All Finance Calculators',
     description:
-      'Browse every free finance calculator on FinanceToolsHub — SIP, CAGR, lumpsum, EMI, GST, and more. Fast, private, browser-based tools.',
+      `Browse every free financial calculator on ${SITE.name} — SIP, CAGR, lumpsum, EMI, GST, and more. Fast, private, browser-based tools.`,
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'All Calculators' },
@@ -53,9 +54,9 @@ export const staticPageSeo = {
   },
   about: {
     pathname: '/about',
-    title: 'About FinanceToolsHub',
+    title: `About ${SITE.name}`,
     description:
-      'Learn how FinanceToolsHub builds free, privacy-first finance calculators that run in your browser with no sign-up.',
+      `Learn how ${SITE.name} builds free, privacy-first financial calculators that run in your browser — mission, editorial standards, and transparency.`,
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'About' },
@@ -63,9 +64,9 @@ export const staticPageSeo = {
   },
   contact: {
     pathname: '/contact',
-    title: 'Contact FinanceToolsHub',
+    title: `Contact ${SITE.name}`,
     description:
-      'Contact FinanceToolsHub for calculator feedback, corrections, partnerships, or editorial questions.',
+      `Contact ${SITE.name} for calculator feedback, corrections, partnerships, or editorial questions. Email ${SITE.email}.`,
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Contact' },
@@ -75,7 +76,7 @@ export const staticPageSeo = {
     pathname: '/privacy',
     title: 'Privacy Policy',
     description:
-      'FinanceToolsHub privacy policy: calculator inputs stay in your browser — we do not collect or store your financial data.',
+      `${SITE.name} privacy policy: calculator inputs stay in your browser — we do not collect or store your financial data. GDPR and CCPA overview included.`,
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Privacy Policy' },
@@ -85,7 +86,7 @@ export const staticPageSeo = {
     pathname: '/terms',
     title: 'Terms & Conditions',
     description:
-      'Terms and conditions for FinanceToolsHub free finance calculators, educational content, disclaimers, and acceptable use.',
+      `Terms and conditions for ${SITE.name} free financial calculators, educational content, disclaimers, and acceptable use.`,
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Terms & Conditions' },

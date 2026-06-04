@@ -7,7 +7,7 @@ import {
   type CurrencyCode,
 } from '../config/currencies';
 
-export const CURRENCY_CHANGE_EVENT = 'fth-currency-change';
+export const CURRENCY_CHANGE_EVENT = 'rft-currency-change';
 
 const formatterCache = new Map<string, Intl.NumberFormat>();
 

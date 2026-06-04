@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import PageHero from '../components/PageHero.astro';
-import AboutTimeline from '../components/about/AboutTimeline';
+import AboutTimeline from '../components/about/AboutTimeline.astro';
+import { aboutPage } from '../content/company-pages';
+import { SITE } from '../config/site';
 import { staticPageSeo } from '../config/seo';
 import { contentPageJsonLd } from '../lib/schema';
 
@@ -15,7 +17,55 @@ const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
 
   <PageHero title={title} description={description} />
 
+  <section class="prose-content mx-auto mt-8 max-w-4xl px-4 sm:px-6">
+    <div class="card">
+      <h2 class="text-title-4">Mission</h2>
+      {aboutPage.mission.map((paragraph) => <p class="text-body mt-4">{paragraph}</p>)}
+    </div>
+  </section>
+
+  <section class="prose-content mx-auto mt-8 max-w-4xl px-4 sm:px-6">
+    <div class="card">
+      <h2 class="text-title-4">What we build</h2>
+      <ul class="text-body mt-4 list-disc space-y-2 pl-5">
+        {aboutPage.whatWeBuild.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
   <AboutTimeline />
+
+  <section class="prose-content mx-auto mt-12 max-w-4xl px-4 sm:px-6">
+    <div class="card">
+      <h2 class="text-title-4">Editorial standards</h2>
+      <ul class="text-body mt-4 list-disc space-y-2 pl-5">
+        {aboutPage.editorial.map((item) => <li>{item}</li>)}
+      </ul>
+      <p class="text-body mt-4">{aboutPage.verification}</p>
+    </div>
+  </section>
+
+  <section class="prose-content mx-auto mt-8 max-w-4xl px-4 sm:px-6">
+    <div class="card">
+      <h2 class="text-title-4">Privacy commitment</h2>
+      <p class="text-body mt-4">{aboutPage.privacyCommitment}</p>
+      <p class="text-body mt-4">
+        Read the full <a href="/privacy">{SITE.name} Privacy Policy</a> for GDPR, CCPA, cookies, and analytics
+        details.
+      </p>
+    </div>
+  </section>
+
+  <section class="prose-content mx-auto mt-8 max-w-4xl px-4 sm:px-6">
+    <div class="card">
+      <h2 class="text-title-4">Transparency</h2>
+      <p class="text-body mt-4">{aboutPage.transparency}</p>
+      <p class="text-body mt-4">
+        Calculator outputs are educational estimates only — not financial, tax, or legal advice. See our{' '}
+        <a href="/terms">Terms &amp; Conditions</a>.
+      </p>
+    </div>
+  </section>
 
   <section class="prose-content mx-auto mt-8 max-w-4xl px-4 sm:px-6">
     <div class="card">
@@ -25,8 +75,7 @@ const jsonLd = contentPageJsonLd({ pathname, title, description, breadcrumbs });
         <a href="/investing">investing</a>, <a href="/loans">loan</a>, and <a href="/taxes">tax</a> hubs.
       </p>
       <p class="text-body mt-4">
-        Questions? <a href="/contact">Contact us</a>. Read our <a href="/privacy">Privacy Policy</a> and
-        <a href="/terms">Terms &amp; Conditions</a>.
+        Questions? <a href="/contact">Contact us</a> at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
     </div>
   </section>
